@@ -1,0 +1,3 @@
+[submodule "powershell-profile"]
+	path = powershell-profile
+	url = https://github.com/JoshDesmond/powershell-profile
