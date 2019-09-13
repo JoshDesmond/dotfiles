@@ -1,1 +1,8 @@
-echom "(>^.^<)"
+set number
+set wrapmargin=4 
+
+nmap <c-d> dd
+imap <c-d> <esc>ddi
+
+imap <c-u> <esc>viwU<esc>i
+nmap <c-u> viwU<esc>
