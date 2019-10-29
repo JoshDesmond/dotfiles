@@ -30,7 +30,7 @@ if(test-path ".\init.vim") {
 	cd "$ENV:UserProfile\"
 	if (test-path ".\.ideavimrc") {
 		write-host "Error: ~\ideavimrc already exists. Printing contents and exiting script"
-		cat .\init.vim
+		cat .\.ideavimrc
 	} else {
 		"source $PSScriptRoot\_vimrc" > ".\.ideavimrc"
 	}
