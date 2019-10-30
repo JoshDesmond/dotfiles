@@ -1,0 +1,5 @@
+# Ignore everything except this file
+# Doing so will prevent JetBrains IDE's from going amuck and trying to commit their .idea/ files, despite it being in your gitignore.
+
+/**
+!/.gitignore
