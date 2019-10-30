@@ -8,7 +8,6 @@ function Print-ProfileLog {
 #=== Machine Logic ====
 #======================
 $isWindows = ($env:OS -like "*windows*")
-$isVirtusa = ($env:COMPUTERNAME -eq "WTLJDESMOND")
 $isDesktop = ($env:COMPUTERNAME -eq "DESKTOP-TOBINO0")
 $isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1SKU")
 $isPersonal = ($isDesktop -or $isLaptop)
@@ -51,31 +50,31 @@ if ($isDesktop) {
 	# TODO set up laptop to have same structure
 	$Env:PSModulePath += ";C:\code\powershell-modules"
 }
-if ($isVirtusa) {
-	$Env:Path += ";C:\Users\jdesmond\Documents\Neovim\bin\"
-}
 
 #======================
 #== Import Chocolatey =
 #======================
-ppl 'Importing Chocolatey'
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
+	ppl 'Importing Chocolatey'
 	Import-Module "$ChocolateyProfile"
 }
 
 #======================
 #=== Import Modules ===
 #======================
-ppl 'Importing Posh-Git'
 if ($isDesktop) {
-Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
+	ppl 'Importing Posh-Git'
+	Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
 } else {
+	ppl 'Importing Posh-Git'
 	Import-Module posh-git
 }
 
-ppl 'Importing Posh-Sshell'
-Import-Module posh-ssh
+if ($isDesktop) {
+	ppl 'Importing Posh-Sshell'
+	Import-Module posh-ssh
+}
 
 #ppl 'Importing AWSPowerShell'
 #Import-Module AWSPowerShell
@@ -239,37 +238,6 @@ Function Launch-IOTA {
 }
 }
 
-# This doesn't work.
-if ($isVirtusa) {
-Function Launch-VM {
-	$vbox_file = Get-Item "C:\Users\$env:username\VirtualBox VMs\CentOS 7\CentOS 7.vbox"
-	start-job {C:\Program Files\Oracle\VirtualBox\VBoxHeadless.exe -startvm $vbox_path -v}
-	Write-Host "If ssh fails, try the following command again more than once"
-	Write-Host "ssh -p2222 admin@127.0.0.1 -v" -ForegroundColor green
-	Write-Host "You can access the PowerShell jobs with the variable $job"
-	ssh -p2222 admin@127.0.0.1 -v
-}
-}
-
-if ($isVirtusa) {
-Function CentOSSH {
-	ssh -p2222 admin@127.0.0.1 -v
-}
-}
-
-# Adding an external script real quick.
-if ($isVirtusa) {
-	get-content -path C:\Shortcuts\lunatic.ps1 -raw | invoke-expression
-}
-
-if ($isVirtusa) {
-Function chrome-debug ($cport = 9222) {
-	$chrome ="$((Get-ChildItem "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe").Directory)\Chrome.exe"
-	$ccommand = "& '$chrome' --remote-debugging-port=$cport"
-	Write-Host "Invoking $ccommand"
-	Invoke-Expression "& '$chrome' --remote-debugging-port=$cport"
-}
-}
 #======================
 #==== Finishing Up ====
 #======================
