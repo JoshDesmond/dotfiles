@@ -9,7 +9,7 @@ function Print-ProfileLog {
 #======================
 $isWindows = ($env:OS -like "*windows*")
 $isDesktop = ($env:COMPUTERNAME -eq "DESKTOP-TOBINO0")
-$isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1SKU")
+$isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1KSHUE")
 $isPersonal = ($isDesktop -or $isLaptop)
 
 #======================
@@ -225,6 +225,21 @@ Function Measure-LastCommand() {
 
 # Returns the version of powershell that is running.
 Function Get-PowershellVersion { $PSVersionTable }
+
+#Converts an HTTP remote to an SSH remote. Only works with remotes called origin
+Function Convert-RepoToSSH() {
+	#https://github.com/USERNAME/REPOSITORY.git
+	#git@github.com:USERNAME/REPOSITORY.git
+
+	$remote = git remote get-url origin
+	if ($remote -notmatch '\.com\/\S+\/\S+\.git') {
+		Write-Error "Remote $remote does not appear to be an http remote"
+	}
+	$remote -match '\.com\/(?<username>\S+)\/(?<repository>\S+)\.git' | out-null
+	$newRemote = "git@github.com:$($matches.username)/$($matches.repository).git"
+	git remote set-url origin $newRemote
+	git remote -v
+}
 
 #======================
 #=Me Specific Commands=
