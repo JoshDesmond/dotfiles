@@ -1,7 +1,14 @@
 # Logging Function
 function Print-ProfileLog {
-	param($text)
-	Write-Host $text -ForegroundColor green	
+	param(
+		$text,
+		[switch]$error
+	)
+	if ($error) {
+		Write-Host $text -ForegroundColor red	
+	} else {
+		Write-Host $text -ForegroundColor green	
+	}
 }
 
 #======================
@@ -46,6 +53,9 @@ $MaximumHistoryCount = 32767
 
 # $Env:
 $Env:Path += ";C:\Shortcuts"
+if ($isPersonal) {
+	$Env:PSModulePath += ";C:\tools\\"
+}
 if ($isDesktop) {
 	# TODO set up laptop to have same structure
 	$Env:PSModulePath += ";C:\code\powershell-modules"
@@ -63,16 +73,26 @@ if (Test-Path($ChocolateyProfile)) {
 #======================
 #=== Import Modules ===
 #======================
-if ("$(choco list --local-only)" -match "posh-{0,1}git") {
+if ("$(choco list --local-only)" -match "posh-{0,1}git") { # TODO is there a more efficient check for this?
 	ppl 'Imported Posh-Git via chocolatey'
 } else {
 	ppl 'Importing Posh-Git'
 	Import-Module posh-git
 }
 
-if ($isDesktop) {
-	ppl 'Importing Posh-Sshell'
-	Import-Module posh-ssh
+if ($isPersonal) {
+	if (Get-Module -Name posh-ssh) {
+		ppl 'Importing Posh-Sshell'
+		Import-Module posh-ssh
+	}
+	else {
+		ppl 'Posh-Sshell not detected, attempting install' -error
+		& "$PSScriptRoot\install-posh-ssh.ps1"
+		if (Test-Path "C:\tools\poshssh\") {
+			ppl 'Importing Posh-Sshell'
+			Import-Module "C:\tools\poshssh\Posh-SSH\Posh-SSH.psd1"
+		}
+	}
 }
 
 #ppl 'Importing AWSPowerShell'
