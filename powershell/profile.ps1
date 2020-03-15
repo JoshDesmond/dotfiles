@@ -63,9 +63,8 @@ if (Test-Path($ChocolateyProfile)) {
 #======================
 #=== Import Modules ===
 #======================
-if ($isDesktop) {
-	ppl 'Importing Posh-Git'
-	Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
+if ("$(choco list --local-only)" -match "posh-{0,1}git") {
+	ppl 'Imported Posh-Git via chocolatey'
 } else {
 	ppl 'Importing Posh-Git'
 	Import-Module posh-git
