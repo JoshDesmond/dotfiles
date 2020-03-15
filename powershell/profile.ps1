@@ -32,6 +32,7 @@ New-Alias vi vim -Force
 New-Alias sha Get-StringHash -Force
 if ($isPersonal) {
 	New-Alias pc "C:\Users\$env:username\Google Drive\Percent Complete 2017.xlsx" -Force
+	New-Alias schedule "C:\Users\$env:username\Google Drive\Schedule.xlsx" -Force
 }
 
 #======================
