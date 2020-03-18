@@ -74,7 +74,7 @@ if (Test-Path($ChocolateyProfile)) {
 #======================
 #=== Import Modules ===
 #======================
-if ("$(choco list --local-only)" -match "posh-{0,1}git") { # TODO is there a more efficient check for this?
+if ($GitMissing -eq $false) {
 	ppl 'Imported Posh-Git via chocolatey'
 } else {
 	ppl 'Importing Posh-Git'
