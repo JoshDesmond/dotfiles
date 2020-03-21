@@ -1,9 +1,14 @@
 # Logging Function
+# $StartTime = $(get-date).Ticks
 function Print-ProfileLog {
 	param(
 		$text,
 		[switch]$error
 	)
+
+    # ($(get-date).Ticks - $StartTime) / 10000000
+    # $Script:StartTime = $(Get-Date).Ticks
+
 	if ($error) {
 		Write-Host $text -ForegroundColor red	
 	} else {
@@ -54,13 +59,7 @@ $MaximumHistoryCount = 32767
 
 # $Env:
 $Env:Path += ";C:\Shortcuts"
-if ($isPersonal) {
-	$Env:PSModulePath += ";C:\tools\\"
-}
-if ($isDesktop) {
-	# TODO set up laptop to have same structure
-	$Env:PSModulePath += ";C:\code\powershell-modules"
-}
+
 
 #======================
 #== Import Chocolatey =
@@ -68,7 +67,7 @@ if ($isDesktop) {
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
 	ppl 'Importing Chocolatey'
-	Import-Module "$ChocolateyProfile"
+    Import-Module "$ChocolateyProfile"
 }
 
 #======================
@@ -89,8 +88,11 @@ elseif (Get-Module -name posh-git) {
 	Import-Module posh-git
 }
 else {
-    ppl 'Posh-Sshell not detected, attempting install' -error
+    ppl 'Posh-Git not detected, attempting install' -error
     & "$PSScriptRoot\install-posh-ssh.ps1" "posh-git"
+    if (Test-Path "C:\tools\posh-git\") {
+        Invoke-Command -ScriptBlock $Script:downloadStrategy
+    }
 }
 
 # Posh-sshell
@@ -114,23 +116,18 @@ else {
     }
 }
 
+Start-SshAgent -Quiet
+
 
 # Posh-SSH
 if (Test-Path C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1) {
     ppl 'Importing Posh-SSH'
     Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
 }
-elseif (Get-Module -Name posh-ssh) {
-	ppl 'Importing Posh-SSH'
-	Import-Module posh-ssh
-}
 else {
-	ppl 'Posh-SSH not detected, attempting install' -error
-	& "$PSScriptRoot\install-posh-ssh.ps1" "posh-ssh"
-	if (Test-Path "C:\tools\poshssh\") {
-		ppl 'Importing Posh-Sshell'
-		Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
-	}
+	# & "$PSScriptRoot\install-posh-ssh.ps1" "posh-ssh"
+	# ppl 'Importing Posh-Sshell'
+	# Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
 }
 
 
