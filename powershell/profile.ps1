@@ -74,27 +74,65 @@ if (Test-Path($ChocolateyProfile)) {
 #======================
 #=== Import Modules ===
 #======================
-if ($GitMissing -eq $false) {
-	ppl 'Imported Posh-Git via chocolatey'
-} else {
+
+# Posh-git
+$Script:downloadStrategy = {
+    ppl 'Importing Posh-Git'
+    $script:modulePath = Resolve-Path "C:\tools\posh-git\posh-git*\src\posh-git.psd1"
+    Import-Module $Script:modulePath
+}
+if (Test-Path C:\tools\posh-git\) {
+    Invoke-Command -ScriptBlock $Script:downloadStrategy
+}
+elseif (Get-Module -name posh-git) {
 	ppl 'Importing Posh-Git'
 	Import-Module posh-git
 }
+else {
+    ppl 'Posh-Sshell not detected, attempting install' -error
+    & "$PSScriptRoot\install-posh-ssh.ps1" "posh-git"
+}
 
-if ($isPersonal) {
-	if (Get-Module -Name posh-ssh) {
+# Posh-sshell
+$Script:downloadStrategy = {
+    ppl 'Importing Posh-Shhell'
+    $Script:modulePath = Resolve-Path "C:\tools\posh-sshell\posh-sshell*\posh-sshell.psd1"
+    Import-Module $Script:modulePath
+}
+if (Test-Path C:\tools\posh-sshell\) {
+    Invoke-Command -ScriptBlock $Script:downloadStrategy
+}
+elseif (Get-Module -Name posh-sshell) {
+    ppl 'Importing Posh-Sshell'
+    Import-Module posh-sshell
+} 
+else {
+    ppl 'Posh-Sshell not detected, attempting install' -error
+    & "$PSScriptRoot\install-posh-ssh.ps1" "posh-sshell"
+    if (Test-Path "C:\tools\posh-sshell\") {
+        Invoke-Command -ScriptBlock $Script:downloadStrategy
+    }
+}
+
+
+# Posh-SSH
+if (Test-Path C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1) {
+    ppl 'Importing Posh-SSH'
+    Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
+}
+elseif (Get-Module -Name posh-ssh) {
+	ppl 'Importing Posh-SSH'
+	Import-Module posh-ssh
+}
+else {
+	ppl 'Posh-SSH not detected, attempting install' -error
+	& "$PSScriptRoot\install-posh-ssh.ps1" "posh-ssh"
+	if (Test-Path "C:\tools\poshssh\") {
 		ppl 'Importing Posh-Sshell'
-		Import-Module posh-ssh
-	}
-	else {
-		ppl 'Posh-Sshell not detected, attempting install' -error
-		& "$PSScriptRoot\install-posh-ssh.ps1"
-		if (Test-Path "C:\tools\poshssh\") {
-			ppl 'Importing Posh-Sshell'
-			Import-Module "C:\tools\poshssh\Posh-SSH\Posh-SSH.psd1"
-		}
+		Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
 	}
 }
+
 
 #ppl 'Importing AWSPowerShell'
 #Import-Module AWSPowerShell
