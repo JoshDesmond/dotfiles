@@ -326,6 +326,7 @@ Write-Host 'Configuration Complete. Hello!'
 # Get-History | Group {$_.StartExecutionTime.Hour} | sort Count -desc
 # Get-PSDrive # outputs drives you can jump to
 # Get-NetTCPConnection | ? State -eq Established | ? RemoteAddress -notlike 127* | % { $_; Resolve-DnsName $_.RemoteAddress -type PTR -ErrorAction SilentlyContinue }
+# $env:path -split ";" | Where-Object {-not (Test-Path $_) } # Tests $env:path for missing folders
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_preference_variables?view=powershell-6
 
 # Instead Of           Use
