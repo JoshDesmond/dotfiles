@@ -1,7 +1,19 @@
 # Logging Function
+# $StartTime = $(get-date).Ticks
 function Print-ProfileLog {
-	param($text)
-	Write-Host $text -ForegroundColor green	
+	param(
+		$text,
+		[switch]$error
+	)
+
+    # ($(get-date).Ticks - $StartTime) / 10000000
+    # $Script:StartTime = $(Get-Date).Ticks
+
+	if ($error) {
+		Write-Host $text -ForegroundColor red	
+	} else {
+		Write-Host $text -ForegroundColor green	
+	}
 }
 
 #======================
@@ -9,7 +21,7 @@ function Print-ProfileLog {
 #======================
 $isWindows = ($env:OS -like "*windows*")
 $isDesktop = ($env:COMPUTERNAME -eq "DESKTOP-TOBINO0")
-$isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1SKU")
+$isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1KSHUE")
 $isPersonal = ($isDesktop -or $isLaptop)
 
 #======================
@@ -25,6 +37,7 @@ New-Alias vi vim -Force
 New-Alias sha Get-StringHash -Force
 if ($isPersonal) {
 	New-Alias pc "C:\Users\$env:username\Google Drive\Percent Complete 2017.xlsx" -Force
+	New-Alias schedule "C:\Users\$env:username\Google Drive\Schedule.xlsx" -Force
 }
 
 #======================
@@ -46,10 +59,7 @@ $MaximumHistoryCount = 32767
 
 # $Env:
 $Env:Path += ";C:\Shortcuts"
-if ($isDesktop) {
-	# TODO set up laptop to have same structure
-	$Env:PSModulePath += ";C:\code\powershell-modules"
-}
+
 
 #======================
 #== Import Chocolatey =
@@ -57,24 +67,69 @@ if ($isDesktop) {
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
 	ppl 'Importing Chocolatey'
-	Import-Module "$ChocolateyProfile"
+    Import-Module "$ChocolateyProfile"
 }
 
 #======================
 #=== Import Modules ===
 #======================
-if ($isDesktop) {
-	ppl 'Importing Posh-Git'
-	Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
-} else {
+
+# Posh-git
+$Script:downloadStrategy = {
+    ppl 'Importing Posh-Git'
+    $script:modulePath = Resolve-Path "C:\tools\posh-git\posh-git*\src\posh-git.psd1"
+    Import-Module $Script:modulePath
+}
+if (Test-Path C:\tools\posh-git\) {
+    Invoke-Command -ScriptBlock $Script:downloadStrategy
+}
+elseif (Get-Module -name posh-git) {
 	ppl 'Importing Posh-Git'
 	Import-Module posh-git
 }
-
-if ($isDesktop) {
-	ppl 'Importing Posh-Sshell'
-	Import-Module posh-ssh
+else {
+    ppl 'Posh-Git not detected, attempting install' -error
+    & "$PSScriptRoot\install-posh-ssh.ps1" "posh-git"
+    if (Test-Path "C:\tools\posh-git\") {
+        Invoke-Command -ScriptBlock $Script:downloadStrategy
+    }
 }
+
+# Posh-sshell
+$Script:downloadStrategy = {
+    ppl 'Importing Posh-Shhell'
+    $Script:modulePath = Resolve-Path "C:\tools\posh-sshell\posh-sshell*\posh-sshell.psd1"
+    Import-Module $Script:modulePath
+}
+if (Test-Path C:\tools\posh-sshell\) {
+    Invoke-Command -ScriptBlock $Script:downloadStrategy
+}
+elseif (Get-Module -Name posh-sshell) {
+    ppl 'Importing Posh-Sshell'
+    Import-Module posh-sshell
+} 
+else {
+    ppl 'Posh-Sshell not detected, attempting install' -error
+    & "$PSScriptRoot\install-posh-ssh.ps1" "posh-sshell"
+    if (Test-Path "C:\tools\posh-sshell\") {
+        Invoke-Command -ScriptBlock $Script:downloadStrategy
+    }
+}
+
+Start-SshAgent -Quiet
+
+
+# Posh-SSH
+if (Test-Path C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1) {
+    ppl 'Importing Posh-SSH'
+    Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
+}
+else {
+	# & "$PSScriptRoot\install-posh-ssh.ps1" "posh-ssh"
+	# ppl 'Importing Posh-Sshell'
+	# Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
+}
+
 
 #ppl 'Importing AWSPowerShell'
 #Import-Module AWSPowerShell
@@ -225,6 +280,21 @@ Function Measure-LastCommand() {
 
 # Returns the version of powershell that is running.
 Function Get-PowershellVersion { $PSVersionTable }
+
+#Converts an HTTP remote to an SSH remote. Only works with remotes called origin
+Function Convert-RepoToSSH() {
+	#https://github.com/USERNAME/REPOSITORY.git
+	#git@github.com:USERNAME/REPOSITORY.git
+
+	$remote = git remote get-url origin
+	if ($remote -notmatch '\.com\/\S+\/\S+\.git') {
+		Write-Error "Remote $remote does not appear to be an http remote"
+	}
+	$remote -match '\.com\/(?<username>\S+)\/(?<repository>\S+)\.git' | out-null
+	$newRemote = "git@github.com:$($matches.username)/$($matches.repository).git"
+	git remote set-url origin $newRemote
+	git remote -v
+}
 
 #======================
 #=Me Specific Commands=
