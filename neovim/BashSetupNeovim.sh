@@ -8,6 +8,7 @@ test_for_existing_file() {
 	if [ -f "$1" ]; then
 		echo "$1 already exists. Printing contents and exiting script."
 		cat $1
+		# TODO delete files if they exist
 		exit 2
 	fi
 }
