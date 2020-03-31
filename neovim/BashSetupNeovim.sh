@@ -6,10 +6,15 @@ SCRIPT_IDEAVIMRC=~/.ideavimrc
 
 test_for_existing_file() {
 	if [ -f "$1" ]; then
-		echo "$1 already exists. Printing contents and exiting script."
+		echo "$1 already exists. Printing contents:"
 		cat $1
-		# TODO delete files if they exist
-		exit 2
+		echo "Would you like to completely remove the file?"
+		select yn in "Yes" "No"; do
+			case $yn in
+				Yes ) rm $1; break;;
+				No ) break;;
+			esac
+		done
 	fi
 }
 
