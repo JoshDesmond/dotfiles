@@ -17,7 +17,7 @@ if [ -f "$SSH_DEFAULT_KEY" ]; then
 	exit 2
 fi	
 
-ssh-keygen -t rsa -b 4096 -C "JoshDesmond@users.noreply.github.com"
+ssh-keygen -t rsa -b 4096 -C "jdesmond"
 ssh-add "$SSH_DEFAULT_KEY_PRIVATE"
 
 echo
