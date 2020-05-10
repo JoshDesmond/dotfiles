@@ -21,7 +21,7 @@ sudo apt-get --assume-yes autoclean
 # Install packages
 sudo apt-get --assume-yes install git
 
-cd ~/home
+cd ~
 mkdir code
 cd ./code
 mkdir school

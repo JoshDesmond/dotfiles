@@ -1,11 +1,9 @@
 #!/bin/bash
 # Sets up .bashrc
 
-# Increase and modify Bash history logs
-export HISTTIMEFORMAT="%h %d %H:%M:%S "
-export HISTSIZE=1000000
-export HISTFILESIZE=1000000
-shopt -s histappend
-export HISTCONTROL=ignoreboth:erasedups
-export HISTIGNORE="ls:la:lla"
+# TODO grep ~/.bashrc and check for "/.bash_personal" so you can know if it's already a thing
+
+printf "\n\n" >> ~/.bashrc
+printf "source $PWD/.bash_personal_aliases\n" >> ~/.bashrc
+printf "source $PWD/.bash_personal_config\n\n" >> ~/.bashrc
 
