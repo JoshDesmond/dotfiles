@@ -9,3 +9,5 @@ shopt -s histappend
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:la:lla"
 
+# Add ~/.local/bin to path
+export PATH=$PATH:$HOME/.local/bin
