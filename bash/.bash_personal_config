@@ -7,7 +7,8 @@ export HISTSIZE=1000000
 export HISTFILESIZE=1000000
 shopt -s histappend
 export HISTCONTROL=ignoreboth:erasedups
-export HISTIGNORE="ls:la:lla"
+export HISTIGNORE="ls:la:lla:exit:l:clear"
 
 # Add ~/.local/bin to path
 export PATH=$PATH:$HOME/.local/bin
+

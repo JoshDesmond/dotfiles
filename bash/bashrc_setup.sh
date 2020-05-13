@@ -1,6 +1,8 @@
 #!/bin/bash
 # Sets up .bashrc
 
+cd "${0%/*}"
+
 # TODO grep ~/.bashrc and check for "/.bash_personal" so you can know if it's already a thing
 SCRIPT_GREP_RESULT=$(grep ".bash_personal_aliases" ~/.bashrc )
 
@@ -15,7 +17,9 @@ fi
 
 
 
-# printf "\n\n" >> ~/.bashrc
-# printf "source $PWD/.bash_personal_aliases\n" >> ~/.bashrc
-# printf "source $PWD/.bash_personal_config\n\n" >> ~/.bashrc
+printf "\n\n" >> ~/.bashrc
+printf "source $PWD/.bash_personal_aliases\n" >> ~/.bashrc
+printf "source $PWD/.bash_personal_config\n\n" >> ~/.bashrc
+
+source ~/.bashrc
 
