@@ -1,4 +1,4 @@
-$isWindows = ($env:OS -like "*windows*")
+
 if (! $isWindows) {
 	write-error "OS doesn't seem to be Windows"
 	Break Script
@@ -25,15 +25,14 @@ if(test-path ".\init.vim") {
 	"source $PSScriptRoot\_vimrc" > ".\init.vim"
 }
 
-# The following block is for making your _vimrc work with ideavim
-{
-	cd "$ENV:UserProfile\"
-	if (test-path ".\.ideavimrc") {
-		write-host "Error: ~\ideavimrc already exists. Printing contents and exiting script"
-		cat .\.ideavimrc
-	} else {
-		"source $PSScriptRoot\_vimrc" > ".\.ideavimrc"
-	}
+# The following section is for making your _vimrc work with ideavim
+cd "$ENV:UserProfile\"
+if (test-path ".\.ideavimrc") {
+	write-host "Error: ~\ideavimrc already exists. Printing contents and exiting script"
+	cat .\.ideavimrc
+} else {
+	"source $PSScriptRoot\_vimrc" > ".\.ideavimrc"
 }
+
 
 cd $PSScriptRoot
