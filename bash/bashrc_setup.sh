@@ -1,9 +1,10 @@
 #!/bin/bash
 # Sets up .bashrc
 
+# cd to the directory this script is in
 cd "${0%/*}"
 
-# TODO grep ~/.bashrc and check for "/.bash_personal" so you can know if it's already a thing
+# Check if .bashrc is already set up
 SCRIPT_GREP_RESULT=$(grep ".bash_personal_aliases" ~/.bashrc )
 
 if [ -n "$SCRIPT_GREP_RESULT" ] ; then
