@@ -4,7 +4,7 @@
 # wget -O - https://raw.githubusercontent.com/JoshDesmond/dotfiles/master/linux_environment_setup.sh | sudo bash
 
 echo "WARNING, this script hasn't been tested, exiting now"
-exit 1
+# exit 1
 
 if [[ $EUID > 0 ]] ; then
 	echo "Error: Script must be run as root"
@@ -21,6 +21,12 @@ sudo apt-get --assume-yes autoclean
 # Install packages
 sudo apt-get --assume-yes install git
 
+# Do some git setup
+git config --global user.email "JoshDesmond@users.noreply.github.com"
+git config --global user.name "JoshDesmond"
+git remote set-url origin "git@github.com:JoshDesmond/dotfiles.git"
+
+# Setup ~/code/ folders
 cd ~
 mkdir code
 cd ./code

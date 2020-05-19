@@ -19,7 +19,6 @@ function Print-ProfileLog {
 #======================
 #=== Machine Logic ====
 #======================
-$isWindows = ($env:OS -like "*windows*")
 $isDesktop = ($env:COMPUTERNAME -eq "DESKTOP-TOBINO0")
 $isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1KSHUE")
 $isPersonal = ($isDesktop -or $isLaptop)
@@ -60,6 +59,12 @@ $MaximumHistoryCount = 32767
 # $Env:
 $Env:Path += ";C:\Shortcuts"
 
+# Neovim:
+if (Test-Path "C:\tools\Neovim\bin\") {
+    $Env:Path += ";C:\tools\Neovim\bin\"
+} else {
+    ppl 'Neovim Installation not detected.' -error
+}
 
 #======================
 #== Import Chocolatey =
@@ -116,19 +121,9 @@ else {
     }
 }
 
+# TODO write an admin script that will do:
+# Get-Service -Name ssh-agent | Set-Service -StartupType Manual
 Start-SshAgent -Quiet
-
-
-# Posh-SSH
-if (Test-Path C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1) {
-    ppl 'Importing Posh-SSH'
-    Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
-}
-else {
-	# & "$PSScriptRoot\install-posh-ssh.ps1" "posh-ssh"
-	# ppl 'Importing Posh-Sshell'
-	# Import-Module "C:\tools\posh-ssh\Posh-SSH\Posh-SSH.psd1"
-}
 
 
 #ppl 'Importing AWSPowerShell'
