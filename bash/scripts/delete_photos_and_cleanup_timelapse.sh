@@ -25,7 +25,7 @@ echo "$(tail -n 1 "$path_files") extracted to:"
 echo "$last_files_date"
 new_files="$path_timelapse_dir/$last_files_date-files.txt"
 echo "renaming files to $new_files" > "$path_mutex"
-cp "$path_files" "$new_files" TODO TEMP uncomment
+cp "$path_files" "$new_files"
 
 nudata="/media/viridian/NuData/"
 
@@ -46,9 +46,11 @@ else
 	# "$nudata/Videos/timelapse/$last_movie_base"
 fi
 
-gzip "$new_files" TODO TEMP uncomment
+gzip "$new_files"
 
 # Delete all of the files that were listed in files.txt
+echo "deleting pictures in 3 seconds" 
+sleep 3
 count=0
 for f in $(cat "$path_files"); do
 	let "count=count+1"

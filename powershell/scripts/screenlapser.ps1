@@ -43,7 +43,7 @@ Function Take-Screenshots {
 	    # Save to file
 	    $Bitmap.Save($FullName, $Imageformat)
 
-        Start-Sleep -Seconds 2
+        Start-Sleep -Seconds 4
     } While ($TRUE)
 }
 
