@@ -21,7 +21,8 @@ echo "files.txt created, beginning sorting of $SCRIPT_TOTAL_NUM_SCREENSHOTS imag
 sort files.txt >/dev/null
 
 echo "sorting finished, running encoder command:"
-echo "mencoder -noskip -ovc x264 -x264encopts subq=7:frameref=4:threads=auto:qcomp=0.9 -mf w=1920:h=1080:fps=60:type=jpg 'mf://@files.txt' -o \"$(date +%F%H)-screenlapse.avi\""
+echo "mencoder -noskip -ovc x264 -x264encopts subq=7:frameref=4:threads=auto:qcomp=0.9 -mf
+w=1920:h=1080:fps=60:type=jpg 'mf://@files.txt' -o \"$(date +%F%H)-screenlapse.mp4\""
 
 
 # mencoder -ovc x264 -mf w=1920:h=1080:fps=60:type=jpg 'mf://@files.txt' -o
