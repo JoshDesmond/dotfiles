@@ -40,6 +40,11 @@ Function Take-Screenshots {
     $Imageformat= [System.Drawing.Imaging.ImageFormat]::Jpeg
 	
 	do {
+        if (Get-Process loginui -ErrorAction SilentlyContinue) {
+            Start-Sleep -Seconds 30
+            Continue
+        }
+
         $FullName = Join-Path -Path $timelapse_directory -ChildPath $((get-date -f yyyy-MM-dd-HHmmss)+".jpg")
 
         # Create bitmap using the top-left and bottom-right bounds
@@ -55,6 +60,8 @@ Function Take-Screenshots {
 	    $Bitmap.Save($FullName, $Imageformat)
 
         Start-Sleep -Seconds $sleep_time
+
+        
     } While ($TRUE)
 }
 
