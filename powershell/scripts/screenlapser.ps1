@@ -40,7 +40,7 @@ Function Take-Screenshots {
     $Imageformat= [System.Drawing.Imaging.ImageFormat]::Jpeg
 	
 	do {
-        if (Get-Process loginui -ErrorAction SilentlyContinue) {
+        if (Get-Process logonui -ErrorAction SilentlyContinue) {
             Start-Sleep -Seconds 30
             Continue
         }
