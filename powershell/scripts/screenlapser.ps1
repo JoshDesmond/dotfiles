@@ -30,7 +30,7 @@ Function Take-Screenshots {
     Add-type -AssemblyName System.Drawing
 
     # TODO fix this section, make dowhile loop use variables instead of constants
-    $Screen = [System.Windows.Forms.SystemInformation]::$Area
+    $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
     $Width = $Screen.Width
     $Height = $Screen.Height
     $Left = $Screen.Left
@@ -43,7 +43,7 @@ Function Take-Screenshots {
         $FullName = Join-Path -Path $timelapse_directory -ChildPath $((get-date -f yyyy-MM-dd-HHmmss)+".jpg")
 
         # Create bitmap using the top-left and bottom-right bounds
-	    $Bitmap = New-Object -TypeName System.Drawing.Bitmap -ArgumentList 1920, 1080
+	    $Bitmap = New-Object -TypeName System.Drawing.Bitmap -ArgumentList $Width, $Height
 
 	    # Create Graphics object
 	    $Graphic = [System.Drawing.Graphics]::FromImage($Bitmap)
