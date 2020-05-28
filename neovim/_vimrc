@@ -1,14 +1,12 @@
 set number
-set wrapmargin=4 
+set wrapmargin=4
 
-nmap <c-d> dd
-imap <c-d> <esc>ddi
-imap <c-l> <esc><c-l>i
-imap jk <esc>
-imap <c-u> <esc>viwU<esc>i
-nmap <c-u> viwU<esc>
+" Is this a thing?:
+set encoding=utf-8
 
-" TODO make search case-insensitive
-" TODO highlight search?
-" TODO fix tab settings
-" TODO add line showing 80 steps
+nnoremap <c-d> dd
+inoremap <c-d> <esc>ddi
+inoremap <c-l> <esc><c-l>i
+inoremap jk <esc>
+inoremap <c-u> <esc>viwU<esc>i
+nnoremap <c-u> viwU<esc>

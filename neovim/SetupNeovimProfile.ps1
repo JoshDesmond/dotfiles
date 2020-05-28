@@ -38,7 +38,9 @@ if (test-path ".\.ideavimrc") {
 	write-host "Error: ~\ideavimrc already exists. Printing contents and exiting script"
 	cat .\.ideavimrc
 } else {
-	"source $PSScriptRoot\_vimrc" > ".\.ideavimrc"
+	# TODO not sure if the below actually works...
+	write-error "Testing new syntax for writing file, double check .ideavimrc is correct"
+	"source $PSScriptRoot\_vimrc" | Out-File -Encoding "UTF8" .\.ideavimrc
 }
 
 
