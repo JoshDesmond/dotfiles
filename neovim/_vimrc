@@ -10,3 +10,11 @@ inoremap <c-l> <esc><c-l>i
 inoremap jk <esc>
 inoremap <c-u> <esc>viwU<esc>i
 nnoremap <c-u> viwU<esc>
+
+" Whitespace stuff
+" Default vim settings (?):
+" set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set noexpandtab
