@@ -7,3 +7,8 @@ imap <c-l> <esc><c-l>i
 imap jk <esc>
 imap <c-u> <esc>viwU<esc>i
 nmap <c-u> viwU<esc>
+
+" TODO make search case-insensitive
+" TODO highlight search?
+" TODO fix tab settings
+" TODO add line showing 80 steps

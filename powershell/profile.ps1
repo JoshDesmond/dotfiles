@@ -16,9 +16,23 @@ function Print-ProfileLog {
 	}
 }
 
+New-Alias ppl Print-ProfileLog -Force
+
 #======================
 #=== Machine Logic ====
 #======================
+# Check powershell version to see if you are on PSCore
+
+if ($PSVersionTable.PSEdition -eq "Desktop") {
+	ppl "Warning: You are running the Desktop Version of Powershell" -error
+	ppl "Download the latest version of Powershell core at:" -error
+	ppl "https://github.com/PowerShell/PowerShell/releases/latest" -error
+	# Note that $IsWindows (and other features, surely), will only work on PSCore
+	# Look for <a href="/PowerShell/PowerShell/releases/download/v7.0.1/PowerShell-7.0.1-win-x64.msi">
+	# If you want to automate core installation
+}
+
+# Check which computer you are on and set variables
 $isDesktop = ($env:COMPUTERNAME -eq "DESKTOP-TOBINO0")
 $isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1KSHUE")
 $isPersonal = ($isDesktop -or $isLaptop)
@@ -61,9 +75,14 @@ $Env:Path += ";C:\Shortcuts"
 
 # Neovim:
 if (Test-Path "C:\tools\Neovim\bin\") {
+    ppl 'Importing Neovim'
     $Env:Path += ";C:\tools\Neovim\bin\"
 } else {
     ppl 'Neovim Installation not detected.' -error
+    # TODO download
+    # https://github.com/neovim/neovim/releases
+    # look for nvim-win64.zip
+    # Extract the archive into c:/tools/Neovim/
 }
 
 #======================
