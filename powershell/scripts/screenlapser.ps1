@@ -15,7 +15,7 @@ echo $timelapse_directory
 echo $(test-path $timelapse_directory)
 
 # Set speed seperately for laptop vs. desktop (#TODO create some kind of config file?)
-[int]$sleep_time = 4
+[int]$sleep_time = 5
 if ($env:COMPUTERNAME -eq "Desktop-G1KSHUE") {
 	$sleep_time = 12
 }
@@ -29,8 +29,7 @@ Function Take-Screenshots {
 	Add-Type -AssemblyName System.Windows.Forms
     Add-type -AssemblyName System.Drawing
 
-    # TODO fix this section, make dowhile loop use variables instead of constants
-    $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
+    $Screen = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize
     $Width = $Screen.Width
     $Height = $Screen.Height
     $Left = $Screen.Left
