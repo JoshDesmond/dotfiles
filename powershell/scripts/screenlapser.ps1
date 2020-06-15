@@ -12,7 +12,6 @@ $timelapse_directory = Join-Path -Path $timelapse_directory -ChildPath $(get-dat
 New-Item -ItemType Directory -Force -Path $timelapse_directory
 
 echo $timelapse_directory
-echo $(test-path $timelapse_directory)
 
 # Set speed seperately for laptop vs. desktop (#TODO create some kind of config file?)
 [int]$sleep_time = 5
@@ -35,9 +34,14 @@ Function Take-Screenshots {
     $Left = $Screen.Left
     $Top = $Screen.Top
 
-    
     $Imageformat= [System.Drawing.Imaging.ImageFormat]::Jpeg
 	
+	# Create bitmap using the top-left and bottom-right bounds
+	$Bitmap = New-Object -TypeName System.Drawing.Bitmap -ArgumentList $Width, $Height
+
+	# Create Graphics object
+	$Graphic = [System.Drawing.Graphics]::FromImage($Bitmap)
+
 	do {
         if (Get-Process logonui -ErrorAction SilentlyContinue) {
             Start-Sleep -Seconds 30
@@ -45,12 +49,6 @@ Function Take-Screenshots {
         }
 
         $FullName = Join-Path -Path $timelapse_directory -ChildPath $((get-date -f yyyy-MM-dd-HHmmss)+".jpg")
-
-        # Create bitmap using the top-left and bottom-right bounds
-	    $Bitmap = New-Object -TypeName System.Drawing.Bitmap -ArgumentList $Width, $Height
-
-	    # Create Graphics object
-	    $Graphic = [System.Drawing.Graphics]::FromImage($Bitmap)
 
 	    # Capture screen
 	    $Graphic.CopyFromScreen(0, 0, 0, 0, $Bitmap.Size)
@@ -63,5 +61,6 @@ Function Take-Screenshots {
         
     } While ($TRUE)
 }
+
 
 Take-Screenshots
