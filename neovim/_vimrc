@@ -1,12 +1,15 @@
+:let mapleader = " "
+:let maplocalleader = "-"
+
 set number
 set wrapmargin=4
 
 " Is this a thing?:
 set encoding=utf-8
 
-nnoremap <c-d> dd
-inoremap <c-d> <esc>ddi
-inoremap <c-l> <esc><c-l>i
+" nnoremap <c-d> dd
+" inoremap <c-d> <esc>ddi
+" inoremap <c-l> <esc><c-l>i
 inoremap jk <esc>
 inoremap <c-u> <esc>viwU<esc>i
 nnoremap <c-u> viwU<esc>
@@ -18,3 +21,7 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set noexpandtab
+
+nnoremap <leader><tab> :set listchars=space:_,tab:>~ list<enter>
+" TODO how do I make a command to undo that setting, though?
+
