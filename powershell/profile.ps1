@@ -153,9 +153,9 @@ Start-SshAgent -Quiet
 #======================
 ppl 'Defining Functions'
 
-# Print-NodePackages
+# Get-NodePackages
 # Prints the current npm packages installed in the local directory
-function Print-NodePackages {
+function Get-NodePackages {
 	npm list --depth 0
 }
 
@@ -192,9 +192,9 @@ function lla {
 
 function la {ls -force}
 
-# Print-Colors
+# Get-Colors
 # Prints a line of each color to console.
-function Print-Colors {
+function Get-Colors {
 	[System.ConsoleColor].GetEnumValues() | ForEach-Object { Write-Host $_ -ForegroundColor $_ }
 }
 
