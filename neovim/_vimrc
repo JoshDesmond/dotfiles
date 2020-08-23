@@ -1,8 +1,14 @@
 :let mapleader = " "
 :let maplocalleader = "-"
 
+syntax on
+set noerrorbells
+set noswapfile
 set number
 set wrapmargin=4
+set incsearch
+set smartcase
+set colorcolumn=80
 
 " Is this a thing?:
 set encoding=utf-8
@@ -21,6 +27,7 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set noexpandtab
+set smartindent
 
 nnoremap <leader><tab> :call ShowWhiteSpaceToggle()<cr>
 let g:show_white_space = 0
