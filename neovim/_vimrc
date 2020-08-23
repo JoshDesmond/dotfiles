@@ -1,21 +1,21 @@
-:let mapleader = " "
-:let maplocalleader = "-"
-
-syntax on
+" Behavior Settings
 set noerrorbells
 set noswapfile
-set number
-set wrapmargin=4
 set incsearch
 set smartcase
-set colorcolumn=80
-
-" Is this a thing?:
+set wrapmargin=4
 set encoding=utf-8
 
+" Visual Settings
+syntax on
+set colorcolumn=80
+set number
+
+" Mappings
+:let mapleader = " "
+:let maplocalleader = "-"
 " nnoremap <c-d> dd
 " inoremap <c-d> <esc>ddi
-" inoremap <c-l> <esc><c-l>i
 inoremap jk <esc>
 inoremap <c-u> <esc>viwU<esc>i
 nnoremap <c-u> viwU<esc>
@@ -29,6 +29,7 @@ set softtabstop=4
 set noexpandtab
 set smartindent
 
+" Advanced Mappings
 nnoremap <leader><tab> :call ShowWhiteSpaceToggle()<cr>
 let g:show_white_space = 0
 
@@ -44,3 +45,4 @@ function! ShowWhiteSpaceToggle()
 	endif
 endfunction
 
+" Plugins
