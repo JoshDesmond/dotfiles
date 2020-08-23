@@ -1,3 +1,6 @@
+" For a plugin manager, checkout https://github.com/junegunn/vim-plug
+" Cross platform support is wacky, so maybe just use it on unix only
+
 " Behavior Settings
 set noerrorbells
 set noswapfile
@@ -45,4 +48,3 @@ function! ShowWhiteSpaceToggle()
 	endif
 endfunction
 
-" Plugins
