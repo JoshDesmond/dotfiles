@@ -30,6 +30,12 @@ Thumbs.db
 # Logs
 *.log
 
+# Private & Secret Files
+*.der 
+*.key 
+*.pem 
+*.env
+
 #======================
 #==== Editor Files ====
 #======================
@@ -44,7 +50,6 @@ local.properties
 # !.vscode/launch.json
 # !.vscode/extensions.json
 
-# 
 
 #======================
 #==== Build Files =====
