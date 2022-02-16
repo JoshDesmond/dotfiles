@@ -2,8 +2,9 @@
 # This script can be run on a new Linux installation to set up directories and dotfiles
 # Run with the command 
 # wget -O - https://raw.githubusercontent.com/JoshDesmond/dotfiles/master/linux_environment_setup.sh | sudo bash
+# The script as is configured for running once dotfiles has already been cloned, however
 
-echo "WARNING, this script hasn't been tested, exiting now"
+# echo "WARNING, this script hasn't been tested, exiting now"
 # exit 1
 
 if [[ $EUID > 0 ]] ; then
@@ -21,19 +22,17 @@ sudo apt-get --assume-yes autoclean
 # Install packages
 sudo apt-get --assume-yes install git
 
-# Do some git setup
-git config --global user.email "JoshDesmond@users.noreply.github.com"
-git config --global user.name "JoshDesmond"
-git remote set-url origin "git@github.com:JoshDesmond/dotfiles.git"
-
 # Setup ~/code/ folders
-cd ~
-mkdir code
-cd ./code
+cd /home/$SUDO_USER/
+code_dir="/home/$SUDO_USER/code"
+if [[ ! -d $code_dir ]]; then
+	mkdir code
+fi
+cd $code_dir
 mkdir school
 mkdir online
 mkdir personal
 
-git clone https://github.com/JoshDesmond/dotfiles.git
+# git clone https://github.com/JoshDesmond/dotfiles.git
 
 exit 0
