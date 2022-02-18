@@ -32,6 +32,7 @@ cd $code_dir
 mkdir school
 mkdir online
 mkdir personal
+mkdir others
 
 # git clone https://github.com/JoshDesmond/dotfiles.git
 
