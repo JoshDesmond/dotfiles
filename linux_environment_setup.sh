@@ -33,6 +33,8 @@ mkdir school
 mkdir online
 mkdir personal
 mkdir others
+# TODO get username and then
+# chown -R $username:$username school/ online/ personal/ others/
 
 # git clone https://github.com/JoshDesmond/dotfiles.git
 
