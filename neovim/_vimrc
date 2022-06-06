@@ -32,6 +32,8 @@ set softtabstop=4
 set noexpandtab
 set smartindent
 
+" TODO autocmd commands for file types
+
 " Advanced Mappings
 nnoremap <leader><tab> :call ShowWhiteSpaceToggle()<cr>
 let g:show_white_space = 0
@@ -47,4 +49,12 @@ function! ShowWhiteSpaceToggle()
 		let g:show_white_space=1
 	endif
 endfunction
+
+" ~~~ Other vim reference ~~~
+" ~~ Spacing: ~~
+" Show all tabs: /\t
+" Show trailing whitespace:/\s\+$
+" Show trailing whitespace only after some text (ignores blank lines):
+" /\S\zs\s\+$
+" Show spaces before a tab:/ \+\ze\t
 
