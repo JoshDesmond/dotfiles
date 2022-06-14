@@ -43,7 +43,9 @@ set smartindent
 " Plugins: (Via vim-plug)
 call plug#begin()
 Plug 'pprovost/vim-ps1'
+Plug 'joshdick/onedark.vim'
 call plug#end()
+colorscheme onedark
 
 " Advanced Mappings
 nnoremap <leader><tab> :call ShowWhiteSpaceToggle()<cr>
