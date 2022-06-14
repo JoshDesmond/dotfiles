@@ -3,6 +3,8 @@ if (! $IsWindows) {
 	Break Script
 }
 
+echo "NOTICE: The installation of vim-plug is untested. See comments."
+
 if (Test-Path "C:\tools\Neovim\bin\") {
 	echo "Neovim installation found"
 } else {
@@ -42,6 +44,12 @@ if (test-path ".\.ideavimrc") {
 	write-error "Testing new syntax for writing file, double check .ideavimrc is correct"
 	"source $PSScriptRoot\_vimrc" | Out-File -Encoding "UTF8" .\.ideavimrc
 }
+
+# Install vim-plug. See: https://github.com/junegunn/vim-plug
+# TODO this is untested
+iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+	ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq
+	$env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force
 
 
 cd $PSScriptRoot
