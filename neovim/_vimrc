@@ -4,15 +4,21 @@
 " Behavior Settings
 set noerrorbells
 set noswapfile
+set hidden
 set incsearch
 set smartcase
 set wrapmargin=4
+set nowrap
 set encoding=utf-8
+set scrolloff=8
 
 " Visual Settings
 syntax on
 set colorcolumn=80
 set number
+set relativenumber
+set nohlsearch
+set signcolumn=yes
 
 " Mappings
 :let mapleader = " "
@@ -57,4 +63,5 @@ endfunction
 " Show trailing whitespace only after some text (ignores blank lines):
 " /\S\zs\s\+$
 " Show spaces before a tab:/ \+\ze\t
+" :source % " Reloads vimrc while you're editing this file
 
