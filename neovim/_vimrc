@@ -40,6 +40,11 @@ set smartindent
 
 " TODO autocmd commands for file types
 
+" Plugins: (Via vim-plug)
+call plug#begin()
+Plug 'pprovost/vim-ps1'
+call plug#end()
+
 " Advanced Mappings
 nnoremap <leader><tab> :call ShowWhiteSpaceToggle()<cr>
 let g:show_white_space = 0
