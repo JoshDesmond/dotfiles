@@ -46,6 +46,7 @@ Plug 'pprovost/vim-ps1'
 Plug 'joshdick/onedark.vim'
 call plug#end()
 colorscheme onedark
+" Remember to use :PlugInstall
 
 " Advanced Mappings
 nnoremap <leader><tab> :call ShowWhiteSpaceToggle()<cr>
@@ -62,6 +63,11 @@ function! ShowWhiteSpaceToggle()
 		let g:show_white_space=1
 	endif
 endfunction
+
+" Uncomment to enable transparent backgrounds
+" autocmd SourcePost * hi Normal guibg=NONE ctermbg=NONE
+" autocmd SourcePost * hi EndOfBuffer guibg=NONE ctermbg=NONE
+
 
 " ~~~ Other vim reference ~~~
 " ~~ Spacing: ~~
