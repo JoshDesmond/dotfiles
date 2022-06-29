@@ -1,6 +1,11 @@
 " For a plugin manager, checkout https://github.com/junegunn/vim-plug
 " Cross platform support is wacky, so maybe just use it on unix only
 
+" Set windows pasting
+set nocompatible
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
 " Behavior Settings
 set noerrorbells
 set noswapfile
@@ -65,8 +70,9 @@ function! ShowWhiteSpaceToggle()
 endfunction
 
 " Uncomment to enable transparent backgrounds
-" autocmd SourcePost * hi Normal guibg=NONE ctermbg=NONE
-" autocmd SourcePost * hi EndOfBuffer guibg=NONE ctermbg=NONE
+"autocmd SourcePost * highlight Normal     ctermbg=NONE guibg=NONE
+"              \ |    highlight LineNr     ctermbg=NONE guibg=NONE
+"              \ |    highlight SignColumn ctermbg=NONE guibg=NONE
 
 
 " ~~~ Other vim reference ~~~
