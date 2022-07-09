@@ -45,6 +45,8 @@ set shiftwidth=4
 set softtabstop=4
 set noexpandtab
 set smartindent
+autocmd BufRead * DetectIndent
+filetype plugin indent on
 
 " TODO autocmd commands for file types
 
@@ -53,6 +55,7 @@ call plug#begin()
 Plug 'pprovost/vim-ps1'
 Plug 'joshdick/onedark.vim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'timakro/vim-yadi'
 call plug#end()
 colorscheme onedark
 " Remember to use :PlugInstall
