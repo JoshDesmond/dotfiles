@@ -130,7 +130,6 @@ function! ShowWhiteSpaceToggle()
 	if g:show_white_space
 		let g:show_white_space=0
 		set nolist
-		set listchars=space:\ ,tab:\	\	
 	else
 		set listchars=space:_,tab:>~
 		set list
