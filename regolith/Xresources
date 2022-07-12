@@ -1,0 +1,17 @@
+! Configuration file for regolith2
+
+! Backgrounds
+regolith.wallpaper.file: 
+regolith.wallpaper.color.primary: 
+
+! Swap super & alt keybindings
+i3-wm.mod: Mod1
+i3-wm.alt: Mod4
+
+! Smarttab
+! To disable SmartTab, edit: /usr/share/regolith/config.d/35...
+! And then remove the lines at the bottom about smarttabs
+i3-wm.gaps.smart: 0
+
+! Terminal Transparency
+gnome.terminal.use-transparent-background: false
