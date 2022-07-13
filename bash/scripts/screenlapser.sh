@@ -17,7 +17,8 @@ fi
 # Now take pictures every 10 seconds
 while [ 1 ]; do 
 	if gnome-screensaver-command -q | grep -q "inactive" ; then
-		scrot --silent -q 100 $(date +%Y-%m-%d-%H%M%S).jpg; 
+		# TODO branch for laptop vs. desktop or generalize for different screens
+		import -silent -window root -crop 1920x1080+0+0 "`date +%Y-%m-%d-%H%M%S`.jpg"
 	fi
 	sleep 10;
 done
