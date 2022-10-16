@@ -13,6 +13,15 @@ if ! [ -x "$(command -v gnome-screensaver-command)" ]; then
   exit 1
 fi
 
+if [ `hostname` == 'prospero' ]; then
+	while [ 1 ]; do
+		if gnome-screensaver-command -q | grep -q "inactive" ; then
+			scrot -q 100 $(date +%Y-%m-%d-%H%M%S).jpg;
+		fi
+		sleep 10;
+	done
+fi
+
 
 # Now take pictures every 10 seconds
 while [ 1 ]; do 
