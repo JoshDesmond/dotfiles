@@ -16,11 +16,10 @@ if [ -n "$SCRIPT_GREP_RESULT" ] ; then
 	exit 0
 fi
 
-
-
 printf "\n\n" >> ~/.bashrc
 printf "source $PWD/.bash_personal_aliases\n" >> ~/.bashrc
 printf "source $PWD/.bash_personal_config\n\n" >> ~/.bashrc
+export PATH="$PATH:$HOME/code/dotfiles/bash/scripts"
 
 # Set up case-insensitivity (from: https://askubuntu.com/q/87061/1039153):
 # If ~/.inputrc doesn't exist yet: First include the original /etc/inputrc
