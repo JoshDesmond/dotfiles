@@ -32,11 +32,6 @@ if ($PSVersionTable.PSEdition -eq "Desktop") {
 	# If you want to automate core installation
 }
 
-# Check which computer you are on and set variables
-$isDesktop = ($env:COMPUTERNAME -eq "DESKTOP-TOBINO0")
-$isLaptop = ($env:COMPUTERNAME -eq "Desktop-G1KSHUE")
-$isPersonal = ($isDesktop -or $isLaptop)
-
 #======================
 #====== Aliases =======
 #======================
@@ -48,10 +43,6 @@ New-Alias version Get-PowershellVersion -Force
 New-Alias vim nvim -Force
 New-Alias vi vim -Force
 New-Alias sha Get-StringHash -Force
-if ($isPersonal) {
-	New-Alias pc "C:\Users\$env:username\Google Drive\Percent Complete 2017.xlsx" -Force
-	New-Alias schedule "C:\Users\$env:username\Google Drive\Schedule.xlsx" -Force
-}
 
 #======================
 #=== $Env Settings ====
@@ -73,70 +64,51 @@ $MaximumHistoryCount = 32767
 # $Env:
 $Env:Path += ";C:\Shortcuts"
 
-# Neovim:
-if (Test-Path "C:\tools\Neovim\bin\") {
-    ppl 'Importing Neovim'
-    $Env:Path += ";C:\tools\Neovim\bin\"
-} else {
-    ppl 'Neovim Installation not detected.' -error
-    # TODO download
-    # https://github.com/neovim/neovim/releases
-    # look for nvim-win64.zip
-    # Extract the archive into c:/tools/Neovim/
-}
-
-#======================
-#== Import Chocolatey =
-#======================
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-if (Test-Path($ChocolateyProfile)) {
-	ppl 'Importing Chocolatey'
-    Import-Module "$ChocolateyProfile"
-}
-
 #======================
 #=== Import Modules ===
 #======================
 
-# Posh-git
-$Script:downloadStrategy = {
-    ppl 'Importing Posh-Git'
-    $script:modulePath = Resolve-Path "C:\tools\posh-git\posh-git*\src\posh-git.psd1"
-    Import-Module $Script:modulePath
-}
-if (Test-Path C:\tools\posh-git\) {
-    Invoke-Command -ScriptBlock $Script:downloadStrategy
-}
-elseif (Get-Module -name posh-git) {
-	ppl 'Importing Posh-Git'
-	Import-Module posh-git
-}
-else {
-    ppl 'Posh-Git not detected, attempting install' -error
-    & "$PSScriptRoot\install-posh-ssh.ps1" "posh-git"
-    if (Test-Path "C:\tools\posh-git\") {
-        Invoke-Command -ScriptBlock $Script:downloadStrategy
+# posh-git setup
+if (Get-Module -Name posh-git) {
+    ppl "posh-git is already imported"
+} else {
+    # Check if posh-git is installed
+    $poshGitInstalled = Get-Module -ListAvailable -Name posh-git | Where-Object { $_.Version -eq "1.0.0" }
+    
+    # Install if not found
+    if (-not $poshGitInstalled) {
+        ppl "posh-git not detected, installing version 1.0.0..." -error
+        Install-Module -Name posh-git -RequiredVersion 1.0.0 -Scope CurrentUser -Force
+    }
+    
+    # Import the module
+    try {
+        ppl "Importing posh-git"
+        Import-Module -Name posh-git -ErrorAction Stop
+    } catch {
+        ppl "Error importing posh-git: $_" -error
     }
 }
 
-# Posh-sshell
-$Script:downloadStrategy = {
-    ppl 'Importing Posh-Shhell'
-    $Script:modulePath = Resolve-Path "C:\tools\posh-sshell\posh-sshell*\posh-sshell.psd1"
-    Import-Module $Script:modulePath
-}
-if (Test-Path C:\tools\posh-sshell\) {
-    Invoke-Command -ScriptBlock $Script:downloadStrategy
-}
-elseif (Get-Module -Name posh-sshell) {
-    ppl 'Importing Posh-Sshell'
-    Import-Module posh-sshell
-} 
-else {
-    ppl 'Posh-Sshell not detected, attempting install' -error
-    & "$PSScriptRoot\install-posh-ssh.ps1" "posh-sshell"
-    if (Test-Path "C:\tools\posh-sshell\") {
-        Invoke-Command -ScriptBlock $Script:downloadStrategy
+# posh-sshell setup
+if (Get-Module -Name posh-sshell) {
+    ppl "posh-sshell is already imported"
+} else {
+    # Check if posh-sshell is installed
+    $poshSshellInstalled = Get-Module -ListAvailable -Name posh-sshell
+    
+    # Install if not found
+    if (-not $poshSshellInstalled) {
+        ppl "posh-sshell not detected, installing..." -error
+        Install-Module -Name posh-sshell -Scope CurrentUser -Force
+    }
+    
+    # Import the module
+    try {
+        ppl "Importing posh-sshell"
+        Import-Module -Name posh-sshell -ErrorAction Stop
+    } catch {
+        ppl "Error importing posh-sshell: $_" -error
     }
 }
 
@@ -209,41 +181,6 @@ Function Get-StringHash([String] $String, $HashName = "SHA1") {
 	$StringBuilder.ToString() 
 }
 
-# Block-YouTube
-# Adds YouTube.com to the hosts file.
-Function Block-Youtube {
-	if (-Not $isWindows) { return }
-
-	$hosts = 'C:\Windows\System32\drivers\etc\hosts'
-
-	$is_blocked = Get-Content -Path $hosts |
-	Select-String -Pattern ([regex]::Escape("youtube.com"))
-
-	If(-not $is_blocked) {
-		Add-Content -Path $hosts -Value "127.0.0.1 youtube.com"
-			Add-Content -Path $hosts -Value "127.0.0.1 www.youtube.com"
-	}
-}
-
-# Unblock-YouTube
-# Removes any lines from the hosts file containing Youtube.com
-Function Unblock-Youtube {
-	if (-not $isWindows) { return }
-
-	$hosts = 'C:\Windows\System32\drivers\etc\hosts'
-
-	$is_blocked = Get-Content -Path $hosts |
-	Select-String -Pattern ([regex]::Escape("youtube.com"))
-
-	If($is_blocked) {
-		$newhosts = Get-Content -Path $hosts |
-			Where-Object {
-				$_ -notmatch ([regex]::Escape("youtube.com"))
-			}
-		Set-Content -Path $hosts -Value $newhosts
-	}
-}
-
 # OpenWith-NotepadPlusPlus
 # Opens a file with notepad++
 Function OpenWith-NotepadPlusPlus {
@@ -313,14 +250,7 @@ Function Convert-RepoToSSH() {
 #======================
 #=Me Specific Commands=
 #======================
-ppl 'Defining Personal Functions'
-
-# Starts the IOTA Full Node running on localhost:14625
-if ($isDesktop) {
-Function Launch-IOTA {
-	java -jar C:\Git\iri\target\iri-1.4.1.4.jar -p 14265
-}
-}
+#ppl 'Defining Personal Functions'
 
 #======================
 #==== Finishing Up ====
