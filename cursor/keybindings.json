@@ -1,0 +1,29 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    "key": "alt+i",
+    "command": "composerMode.agent"
+  },
+  {
+    "key": "shift+g",
+    "command": "vscode-neovim.send",
+    "args": "<S-g>",
+    "when": "editorTextFocus && neovim.init && neovim.mode != 'insert'",
+    "priority": "high"
+  },
+  {
+    "key": "shift+alt+o",
+    "command": "-editor.action.organizeImports",
+    "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+  },
+  {
+    "key": "shift+alt+o",
+    "command": "workbench.action.files.openFile",
+    "when": "true"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "-workbench.action.files.openFile",
+    "when": "true"
+  }
+]
