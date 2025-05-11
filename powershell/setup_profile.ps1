@@ -4,7 +4,7 @@ if ( -Not $(Test-Path $Script:new_profile)) {
 	exit 1
 }
 
-if ($PROFILE -eq "C:\code\dotfiles\powershell\profile.ps1") {
+if ($PROFILE -eq "$PSScriptRoot\profile.ps1") {
 	echo "Profile already appears to be configured?"
 	exit 0
 }
@@ -21,15 +21,15 @@ if ( -Not $(Test-Path "$PROFILE")) {
 		New-Item -ItemType Directory -Force -Path $Script:PowershellProfileFolder
 		echo "Creating directory $Script:PowershellProfileFolder"
 	}
-	# TODO how do you avoid escaping $PROFILE but also allow
-	# for $PSScriptRoot in the same string creation? TODO
-	echo '$PROFILE = "C:\code\dotfiles\powershell\profile.ps1"' > $PROFILE
+
+    # Using backticks (`) to escape variables so they're preserved as literal strings in the file
+	echo "`$PROFILE = `"$PSScriptRoot\profile.ps1`"" > $PROFILE
 	echo '. "$PROFILE"' >> $PROFILE
 }
 else {
-	echo '$PROFILE = "$PSScriptRoot\profile.ps1"' >> $PROFILE
+	echo "`$PROFILE = `"$PSScriptRoot\profile.ps1`"" >> $PROFILE
 	echo '. $PROFILE' >> $PROFILE
 }
 
 echo "OG_PROFILE: $OG_PROFILE"
-. $OG_PROFILE
+
