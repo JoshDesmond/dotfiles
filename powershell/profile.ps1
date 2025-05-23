@@ -65,6 +65,31 @@ $MaximumHistoryCount = 32767
 $Env:Path += ";C:\Shortcuts"
 
 #======================
+#=== Custom Scripts ===
+#======================
+ppl 'Loading Custom Scripts'
+
+# Add scripts directory to PATH for direct execution
+$ScriptsPath = "C:\Users\Jodes\Code\dotfiles\powershell\scripts"
+if (Test-Path $ScriptsPath) {
+    $Env:Path += ";$ScriptsPath"
+    ppl "Added scripts directory to PATH"
+} else {
+    ppl "Scripts directory not found: $ScriptsPath" -error
+}
+
+# Create tree function that calls the script
+function tree {
+    param(
+        [string]$Path = ".",
+        [int]$MaxDepth = 3,
+        [int]$MaxFolders = 5
+    )
+
+    & "$ScriptsPath\tree.ps1" -Path $Path -MaxDepth $MaxDepth -MaxFolders $MaxFolders
+}
+
+#======================
 #=== Import Modules ===
 #======================
 
