@@ -78,15 +78,16 @@ if (Test-Path $ScriptsPath) {
     ppl "Scripts directory not found: $ScriptsPath" -error
 }
 
-# Create tree function that calls the script
+# Create tree function that calls the tree script
 function tree {
     param(
         [string]$Path = ".",
         [int]$MaxDepth = 3,
-        [int]$MaxFolders = 5
+        [int]$MaxItems = 5,
+        [switch]$ShowFiles
     )
 
-    & "$ScriptsPath\tree.ps1" -Path $Path -MaxDepth $MaxDepth -MaxFolders $MaxFolders
+    & "$ScriptsPath\tree.ps1" -Path $Path -MaxDepth $MaxDepth -MaxItems $MaxItems -ShowFiles:$ShowFiles
 }
 
 #======================

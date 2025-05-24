@@ -1,7 +1,8 @@
 param(
     [string]$Path = ".",
     [int]$MaxDepth = 3,
-    [int]$MaxFolders = 5
+    [int]$MaxItems = 5,
+    [switch]$ShowFiles
 )
 
 function Show-DirectoryTree {
@@ -14,21 +15,69 @@ function Show-DirectoryTree {
     if ($Depth -gt ($MaxDepth - 1)) { return }
     
     try {
-        $folders = Get-ChildItem -Path $CurrentPath -Directory -ErrorAction Stop | Select-Object -First $MaxFolders
+        # Get directories and files separately
+        $folders = Get-ChildItem -Path $CurrentPath -Directory -ErrorAction Stop
+        $files = @()
+        if ($ShowFiles) {
+            $files = Get-ChildItem -Path $CurrentPath -File -ErrorAction Stop
+        }
         
-        for ($i = 0; $i -lt $folders.Count; $i++) {
-            $folder = $folders[$i]
-            $isLast = ($i -eq $folders.Count - 1)
+        # Limit items and create display objects
+        $displayItems = @()
+        
+        # Add folders first (limited by MaxItems)
+        $folders | Select-Object -First $MaxItems | ForEach-Object {
+            $displayItems += [PSCustomObject]@{
+                Name = $_.Name
+                FullName = $_.FullName
+                Type = "Directory"
+                SortOrder = 0
+            }
+        }
+        
+        # Add files (limited by remaining MaxItems slots)
+        if ($ShowFiles) {
+            $remainingSlots = $MaxItems - $displayItems.Count
+            if ($remainingSlots -gt 0) {
+                $files | Select-Object -First $remainingSlots | ForEach-Object {
+                    $displayItems += [PSCustomObject]@{
+                        Name = $_.Name
+                        FullName = $_.FullName
+                        Type = "File"
+                        SortOrder = 1
+                    }
+                }
+            }
+        }
+        
+        # Sort: directories first, then files, both alphabetically
+        $displayItems = $displayItems | Sort-Object SortOrder, Name
+        
+        # Display items
+        for ($i = 0; $i -lt $displayItems.Count; $i++) {
+            $item = $displayItems[$i]
+            $isLast = ($i -eq $displayItems.Count - 1)
             
             if ($isLast) {
-                Write-Host "$Prefix└── $($folder.Name)" -ForegroundColor Cyan
+                if ($item.Type -eq "Directory") {
+                    Write-Host "$Prefix└── $($item.Name)/" -ForegroundColor Cyan
+                } else {
+                    Write-Host "$Prefix└── $($item.Name)" -ForegroundColor White
+                }
                 $newPrefix = "$Prefix    "
             } else {
-                Write-Host "$Prefix├── $($folder.Name)" -ForegroundColor Cyan
+                if ($item.Type -eq "Directory") {
+                    Write-Host "$Prefix├── $($item.Name)/" -ForegroundColor Cyan
+                } else {
+                    Write-Host "$Prefix├── $($item.Name)" -ForegroundColor White
+                }
                 $newPrefix = "$Prefix│   "
             }
             
-            Show-DirectoryTree -CurrentPath $folder.FullName -Depth ($Depth + 1) -Prefix $newPrefix
+            # Recursively show subdirectories only
+            if ($item.Type -eq "Directory") {
+                Show-DirectoryTree -CurrentPath $item.FullName -Depth ($Depth + 1) -Prefix $newPrefix
+            }
         }
     }
     catch {
