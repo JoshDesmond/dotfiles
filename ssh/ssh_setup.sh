@@ -17,6 +17,9 @@ if [ -f "$SSH_DEFAULT_KEY" ]; then
 	exit 2
 fi	
 
+# TODO install keychain, set it up in the bash profile.
+# See: https://claude.ai/chat/82df1b3c-60b0-4304-980f-55ba6393d88f
+
 ssh-keygen -t rsa -b 4096 -C "jdesmond"
 ssh-add "$SSH_DEFAULT_KEY_PRIVATE"
 
