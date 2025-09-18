@@ -22,4 +22,3 @@ ssh-add "$SSH_DEFAULT_KEY_PRIVATE"
 
 echo
 echo "Created new key $SSH_DEFAULT_KEY"
-
