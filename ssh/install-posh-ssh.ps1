@@ -1,3 +1,5 @@
+# TODO: This code is old and outdated, I should check out if there are new replacements with winget
+
 param (
     [Parameter(Mandatory=$true)]
     [String]
