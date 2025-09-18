@@ -4,6 +4,34 @@ if ( -Not $(Test-Path $Script:new_profile)) {
 	exit 1
 }
 
+###
+# Quick note: I'm kind of mixing paradigms here by introducing an install script into the
+# setup_profile.ps1 script. Ideally, I'd separate the logic a little more, but this will
+# work for now.
+###
+
+# Install OpenSSL
+winget install --id=FireDaemon.OpenSSL -e
+
+# Add to system PATH permanently
+$openSSLPath = "C:\Program Files\FireDaemon OpenSSL 3\bin"
+$currentPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+# Check if the path is already in PATH to avoid duplicates
+if ($currentPath -notlike "*$openSSLPath*") {
+    # Add to system PATH (requires admin privileges)
+    [Environment]::SetEnvironmentVariable("PATH", "$currentPath;$openSSLPath", "Machine")
+    Write-Host "Added $openSSLPath to system PATH"
+} else {
+    Write-Host "Path already exists in system PATH"
+}
+# Refresh the current session's PATH
+$env:PATH = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+
+
+###
+# And now back to the original PowerShell profile installation
+###
+
 if ($PROFILE -eq "$PSScriptRoot\profile.ps1") {
 	echo "Profile already appears to be configured?"
 	exit 0
@@ -32,4 +60,3 @@ else {
 }
 
 echo "OG_PROFILE: $OG_PROFILE"
-
