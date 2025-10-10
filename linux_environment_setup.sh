@@ -27,14 +27,14 @@ cd /home/$SUDO_USER/
 code_dir="/home/$SUDO_USER/code"
 if [[ ! -d $code_dir ]]; then
 	mkdir code
+	chown $SUDO_USER:$SUDO_USER code
 fi
 cd $code_dir
 mkdir school
 mkdir online
 mkdir personal
 mkdir others
-# TODO get username and then
-# chown -R $username:$username school/ online/ personal/ others/
+chown -R $SUDO_USER:$SUDO_USER school/ online/ personal/ others/
 
 # git clone https://github.com/JoshDesmond/dotfiles.git
 
