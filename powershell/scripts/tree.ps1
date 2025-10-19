@@ -16,7 +16,7 @@ function Show-DirectoryTree {
     
     try {
         # Get directories and files separately
-        $folders = Get-ChildItem -Path $CurrentPath -Directory -ErrorAction Stop
+        $folders = Get-ChildItem -Path $CurrentPath -Directory -ErrorAction Stop | Where-Object { $_.Name -ne "node_modules" }
         $files = @()
         if ($ShowFiles) {
             $files = Get-ChildItem -Path $CurrentPath -File -ErrorAction Stop
