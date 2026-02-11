@@ -12,22 +12,49 @@ export HISTIGNORE="ls:la:lla:exit:l:clear"
 # Add ~/.local/bin to path
 export PATH=$PATH:$HOME/.local/bin
 
-# Dot source git completion and git prompt scripts
-if [ -f /usr/share/git/completion/git-completion.bash ]; then
-    . /usr/share/git/completion/git-completion.bash
+# Git completion: source from first path that exists (Linux, macOS Homebrew, Xcode CLI)
+GIT_COMPLETION_LINUX="/usr/share/git/completion/git-completion.bash"
+GIT_COMPLETION_HOMEBREW="/usr/local/share/git/completion/git-completion.bash"
+GIT_COMPLETION_HOMEBREW_ARM="/opt/homebrew/share/git/completion/git-completion.bash"
+if [ -f "$GIT_COMPLETION_LINUX" ]; then
+	. "$GIT_COMPLETION_LINUX"
+elif [ -f "$GIT_COMPLETION_HOMEBREW" ]; then
+	. "$GIT_COMPLETION_HOMEBREW"
+elif [ -f "$GIT_COMPLETION_HOMEBREW_ARM" ]; then
+	. "$GIT_COMPLETION_HOMEBREW_ARM"
 fi
 
-if [ -f /usr/share/git/completion/git-prompt.sh ]; then
-    . /usr/share/git/completion/git-prompt.sh
+GIT_PROMPT_LINUX="/usr/share/git/completion/git-prompt.sh"
+GIT_PROMPT_HOMEBREW="/usr/local/share/git/completion/git-prompt.sh"
+GIT_PROMPT_HOMEBREW_ARM="/opt/homebrew/share/git/completion/git-prompt.sh"
+GIT_PROMPT_XCODE="/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh"
+if [ -f "$GIT_PROMPT_LINUX" ]; then
+	. "$GIT_PROMPT_LINUX"
+elif [ -f "$GIT_PROMPT_HOMEBREW" ]; then
+	. "$GIT_PROMPT_HOMEBREW"
+elif [ -f "$GIT_PROMPT_HOMEBREW_ARM" ]; then
+	. "$GIT_PROMPT_HOMEBREW_ARM"
+elif [ -f "$GIT_PROMPT_XCODE" ]; then
+	. "$GIT_PROMPT_XCODE"
 fi
 
-# Set a custom PS1 variable
-PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w$(__git_ps1 " (%s)")\[\033[00m\]\$ '
+# Git branch in prompt (only if __git_ps1 was loaded)
+GIT_BRANCH_IN_PROMPT=""
+if type __git_ps1 &>/dev/null; then
+	GIT_BRANCH_IN_PROMPT='$(__git_ps1 " (%s)")'
+fi
+
+# Prompt pieces
+PROMPT_GREEN='\[\033[01;32m\]'
+PROMPT_BLUE='\[\033[01;34m\]'
+PROMPT_RESET='\[\033[00m\]'
+
+PS1="$PROMPT_GREEN\u@\h$PROMPT_RESET:$PROMPT_BLUE\w$PROMPT_RESET${GIT_BRANCH_IN_PROMPT}$PROMPT_RESET\$ "
 
 # Shortens the PS1 header for use in deeply nested directories
 shorten() {
 	old_ps1=$PS1
-	PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W$(__git_ps1 " (%s)")\[\033[00m\]\$ '
+	PS1="$PROMPT_GREEN\u@\h$PROMPT_RESET:$PROMPT_BLUE\W$PROMPT_RESET${GIT_BRANCH_IN_PROMPT}$PROMPT_RESET\$ "
 }
 
 longen() {
