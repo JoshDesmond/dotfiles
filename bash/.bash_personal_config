@@ -1,6 +1,17 @@
 # Personal .bashrc
 # use the script, bashrc_setup.sh, to add the sourcing of this and the alias file to ~/.bashrc
 
+# A really cool one liner from Cursor!:
+# Dotfiles scripts as commands: alias each executable .sh in bash/scripts to its name without .sh
+# (e.g. git-diff-contents.sh → command "git-diff-contents"). Path is derived from this file's location.
+DOTFILES_BASH="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)"
+if [ -n "$DOTFILES_BASH" ] && [ -d "$DOTFILES_BASH/scripts" ]; then
+	for f in "$DOTFILES_BASH/scripts"/*.sh; do
+		[ -f "$f" ] && [ -x "$f" ] && alias "$(basename "$f" .sh)"="$f"
+	done
+	unset f
+fi
+
 # Increase and modify Bash history logs
 export HISTTIMEFORMAT="%h %d %H:%M:%S "
 export HISTSIZE=1000000
