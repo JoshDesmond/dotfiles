@@ -23,6 +23,17 @@ export HISTIGNORE="ls:la:lla:exit:l:clear"
 # Add ~/.local/bin to path
 export PATH=$PATH:$HOME/.local/bin
 
+# SSH agent setup
+if command -v keychain >/dev/null 2>&1; then
+	if [ -f "$HOME/.ssh/id_rsa" ]; then
+		eval "$(keychain --quiet --eval --agents ssh "$HOME/.ssh/id_rsa")"
+	else
+		echo "~/.ssh/id_rsa not found; edit bash/.bash_personal_config to set your preferred SSH key."
+	fi
+else
+	echo "keychain not found; install keychain to enable SSH agent persistence."
+fi
+
 # Git completion: source from first path that exists (Linux, macOS Homebrew, Xcode CLI)
 GIT_COMPLETION_LINUX="/usr/share/git/completion/git-completion.bash"
 GIT_COMPLETION_HOMEBREW="/usr/local/share/git/completion/git-completion.bash"

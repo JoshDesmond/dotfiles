@@ -21,6 +21,8 @@ sudo apt-get --assume-yes autoclean
 
 # Install packages
 sudo apt-get --assume-yes install git
+sudo apt-get --assume-yes install openssh-client
+sudo apt-get --assume-yes install keychain
 
 # Setup ~/code/ folders
 cd /home/$SUDO_USER/

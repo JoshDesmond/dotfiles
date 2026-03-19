@@ -3,4 +3,5 @@
 
 apt install imagemagick
 apt install gnome-screensaver
+apt install openssh-client
 apt install keychain
