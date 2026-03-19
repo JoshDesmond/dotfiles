@@ -26,7 +26,12 @@ export PATH=$PATH:$HOME/.local/bin
 # SSH agent setup
 if command -v keychain >/dev/null 2>&1; then
 	if [ -f "$HOME/.ssh/id_rsa" ]; then
-		eval "$(keychain --quiet --eval --agents ssh "$HOME/.ssh/id_rsa")"
+		if [ "$(uname -s)" = "Darwin" ]; then
+			# Homebrew keychain on macOS: pass only key paths (no "ssh" token).
+			eval "$(keychain --quiet --eval "$HOME/.ssh/id_rsa")"
+		else
+			eval "$(keychain --quiet --eval --agents ssh "$HOME/.ssh/id_rsa")"
+		fi
 	else
 		echo "~/.ssh/id_rsa not found; edit bash/.bash_personal_config to set your preferred SSH key."
 	fi
