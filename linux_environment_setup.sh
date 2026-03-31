@@ -4,9 +4,6 @@
 # wget -O - https://raw.githubusercontent.com/JoshDesmond/dotfiles/master/linux_environment_setup.sh | sudo bash
 # The script as is configured for running once dotfiles has already been cloned, however
 
-# echo "WARNING, this script hasn't been tested, exiting now"
-# exit 1
-
 if [[ $EUID > 0 ]] ; then
 	echo "Error: Script must be run as root"
 	exit 2
@@ -32,12 +29,19 @@ if [[ ! -d $code_dir ]]; then
 	chown $SUDO_USER:$SUDO_USER code
 fi
 cd $code_dir
-mkdir school
 mkdir online
 mkdir personal
 mkdir others
 chown -R $SUDO_USER:$SUDO_USER school/ online/ personal/ others/
 
+# TODO: if no dotfiles, then clone the repository here
 # git clone https://github.com/JoshDesmond/dotfiles.git
+
+# Orchestrate other scripts like
+# - bash/bashrc_setup.sh
+# - bash/git_setup.sh
+# - bash/install_scripts.sh
+# - neovim/neovim_rc_setup.sh
+# - ssh/ssh_setup.sh
 
 exit 0
