@@ -13,8 +13,8 @@ git config --global commit.gpgsign true
 git config --global init.defaultBranch main
 git config --global pull.rebase true
 
-# SSH Key setup
-KEY_PUB="$HOME/.ssh/id_ed25519.pub" # TODO, update this to match ssh_setup.sh
+# SSH Key setup (matches ssh/ssh_setup.sh defaults)
+KEY_PUB="$HOME/.ssh/id_rsa.pub"
 if [[ -f "$KEY_PUB" ]]; then
     git config --global user.signingkey "$KEY_PUB"
 else
