@@ -29,19 +29,19 @@ if [[ ! -d $code_dir ]]; then
 	chown $SUDO_USER:$SUDO_USER code
 fi
 cd $code_dir
-mkdir online
-mkdir personal
-mkdir others
-chown -R $SUDO_USER:$SUDO_USER school/ online/ personal/ others/
+mkdir -p online personal others
+chown -R $SUDO_USER:$SUDO_USER online/ personal/ others/
 
 # TODO: if no dotfiles, then clone the repository here
 # git clone https://github.com/JoshDesmond/dotfiles.git
 
-# Orchestrate other scripts like
-# - bash/bashrc_setup.sh
-# - bash/git_setup.sh
-# - bash/install_scripts.sh
-# - neovim/neovim_rc_setup.sh
-# - ssh/ssh_setup.sh
+# Hand off to the cross-platform master composer for the rest
+# (bashrc, git, ssh, neovim, node, etc.).
+DOTFILES_DIR="/home/$SUDO_USER/code/dotfiles"
+if [ -x "$DOTFILES_DIR/setup.sh" ]; then
+	sudo -u "$SUDO_USER" "$DOTFILES_DIR/setup.sh"
+else
+	echo "Note: $DOTFILES_DIR/setup.sh not found; clone the dotfiles repo and run setup.sh manually."
+fi
 
 exit 0

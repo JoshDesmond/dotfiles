@@ -6,8 +6,7 @@ fi
 
 pushd "${0%/*}"
 
-# TODO what happens if there is no /.config/nvim folder? See else todo
-mkdir ~/.config/nvim
+mkdir -p ~/.config/nvim
 SCRIPT_INIT_VIM=~/.config/nvim/init.vim
 SCRIPT_VIMRC=~/.vimrc
 SCRIPT_IDEAVIMRC=~/.ideavimrc
