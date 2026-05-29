@@ -1,39 +1,25 @@
 #!/usr/bin/env bash
-# get-windows-path — Print the full Windows path for a directory (WSL2).
+# get-windows-path.sh — Print the Windows path for a WSL Linux path (files or directories).
 #
-# Usage:
-#   get-windows-path              # current directory
-#   get-windows-path /home/foo    # specific path
+# Usage: get-windows-path [path]
+#   path        Defaults to the current directory. Resolved with realpath -m.
+#   --help, -h  Print this help and exit.
+#
+# Requires wslpath (WSL).
 
 set -euo pipefail
 
-# ── Constants ──────────────────────────────────────────────────────────
-readonly TARGET_PATH="${1:-.}"
+case "${1:-}" in
+--help|-h)
+	awk 'NR==1{next} /^#/{sub(/^#[[:space:]]*/, ""); print; next} {exit}' "$0"
+	exit 0
+	;;
+esac
 
-# ── Functions ──────────────────────────────────────────────────────────
+if ! command -v wslpath >/dev/null 2>&1; then
+	echo "get-windows-path: wslpath not found (run this from WSL)." >&2
+	exit 1
+fi
 
-require_wslpath() {
-  if ! command -v wslpath >/dev/null 2>&1; then
-    echo "get-windows-path: wslpath not found (run this from WSL2)." >&2
-    exit 1
-  fi
-}
-
-# Resolve to an absolute Linux path, then convert to a Windows path.
-get_windows_path() {
-  local linux_path
-  linux_path="$(cd "$TARGET_PATH" 2>/dev/null && pwd -P)" || {
-    echo "get-windows-path: not a directory: ${TARGET_PATH}" >&2
-    exit 1
-  }
-  wslpath -w "$linux_path"
-}
-
-# ── Main ───────────────────────────────────────────────────────────────
-
-main() {
-  require_wslpath
-  get_windows_path
-}
-
-main
+target="${1:-.}"
+wslpath -w "$(realpath -m "$target")"

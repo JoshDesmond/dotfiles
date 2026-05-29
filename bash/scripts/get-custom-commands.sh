@@ -1,11 +1,30 @@
 #!/usr/bin/env bash
-# get-custom-commands — List dotfiles bash scripts, aliases, and functions.
+# get-custom-commands.sh — List dotfiles bash scripts, aliases, and functions.
 #
-# Usage:
-#   get-custom-commands           # compact table (terminal width via tput cols)
-#   get-custom-commands --full    # full paths (may wrap on narrow terminals)
+# Usage: get-custom-commands [options]
+#   (no options)  Compact table sized to the terminal (tput cols).
+#   --full, -f    Full paths and complete detail (no column truncation).
+#   --help, -h    Print this help and exit.
 
 set -euo pipefail
+
+case "${1:-}" in
+--help|-h)
+	awk 'NR==1{next} /^#/{sub(/^#[[:space:]]*/, ""); print; next} {exit}' "$0"
+	exit 0
+	;;
+esac
+
+FULL_OUTPUT=0
+case "${1:-}" in
+--full|-f) FULL_OUTPUT=1 ;;
+"") ;;
+*)
+	echo "get-custom-commands: unknown option: ${1}" >&2
+	echo "Try 'get-custom-commands --help'." >&2
+	exit 1
+	;;
+esac
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly DOTFILES_BASH="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -13,9 +32,6 @@ readonly CONFIG_FILES=(
 	"${DOTFILES_BASH}/.bash_personal_aliases"
 	"${DOTFILES_BASH}/.bash_personal_config"
 )
-
-FULL_OUTPUT=0
-[[ "${1:-}" == "--full" || "${1:-}" == "-f" ]] && FULL_OUTPUT=1
 
 # ── Output ─────────────────────────────────────────────────────────────
 
