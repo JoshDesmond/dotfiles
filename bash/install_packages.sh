@@ -16,6 +16,7 @@ DEFAULT_PACKAGES=(
 	git
 	openssh-client
 	keychain
+	age
 	imagemagick
 	gnome-screensaver
 )

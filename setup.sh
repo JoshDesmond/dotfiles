@@ -70,3 +70,6 @@ fi
 echo
 echo "==== Done ===="
 echo "Open a new shell (or 'source ~/.bashrc') to pick up the new config."
+echo
+echo "==== Optional: SeaCrit (encrypted .env vault) ===="
+echo "    git clone git@github.com:JoshDesmond/seacrit.git ~/code/seacrit"

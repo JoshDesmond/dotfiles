@@ -23,6 +23,9 @@ export HISTIGNORE="ls:la:lla:exit:l:clear"
 # Add ~/.local/bin to path
 export PATH=$PATH:$HOME/.local/bin
 
+# SeaCrit env vault CLI (private repo at ~/code/seacrit)
+[ -d "$HOME/code/seacrit/bin" ] && export PATH="$HOME/code/seacrit/bin:$PATH"
+
 # SSH agent setup
 if command -v keychain >/dev/null 2>&1; then
 	if [ -f "$HOME/.ssh/id_rsa" ]; then
