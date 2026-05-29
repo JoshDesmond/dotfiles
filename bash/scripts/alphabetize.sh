@@ -1,17 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# alphabetize.sh — Print the letters of a word sorted alphabetically (one line, no separators).
+#
+# Usage: alphabetize <word>
+#   --help, -h  Print this help and exit.
+#
+# Requires a non-empty word argument (after any help flag).
 
-# Check if a word is provided as an argument
-if [ -z "$1" ]; then
-    echo "Error: No word provided."
-    exit 1
+_script_help() {
+	awk 'NR==1{next} /^#/{sub(/^#[[:space:]]*/, ""); print; next} {exit}' "$0"
+}
+
+case "${1:-}" in
+--help|-h)
+	_script_help
+	exit 0
+	;;
+esac
+
+if [ -z "${1:-}" ]; then
+	_script_help >&2
+	exit 1
 fi
 
-# Read the word from the command line argument
 word="$1"
-
-# Sort the characters of the word in alphabetical order
 sorted_word=$(echo "$word" | grep -o . | sort | tr -d '\n')
-
-# Print the sorted word
 echo "$sorted_word"
-

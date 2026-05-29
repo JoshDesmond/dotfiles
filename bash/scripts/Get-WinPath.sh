@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
-# Print the Windows-accessible path for a WSL filesystem location as a UNC
-# string: \\wsl$\<distro>\<unix path with backslashes>\
-# On non-WSL systems, prints an error and exits 1.
-# For paths under /mnt/ (drvfs), uses wslpath -w when available.
+# Get-WinPath.sh — Print a Windows UNC path (\\wsl$\<distro>\...) for a WSL Linux path, or wslpath for /mnt/ drives.
+#
+# Usage: Get-WinPath [path]
+#   path        Defaults to the current directory. Resolved with realpath -m.
+#   --help, -h  Print this help and exit.
+#
+# Exits with an error on non-WSL hosts. Uses wslpath -w for paths under /mnt/.
 
 set -euo pipefail
+
+case "${1:-}" in
+--help|-h)
+	awk 'NR==1{next} /^#/{sub(/^#[[:space:]]*/, ""); print; next} {exit}' "$0"
+	exit 0
+	;;
+esac
 
 _is_wsl() {
 	[[ -f /proc/version ]] && grep -qiE 'microsoft|wsl' /proc/version
