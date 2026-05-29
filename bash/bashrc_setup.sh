@@ -14,9 +14,7 @@ else
   BASHRC_PATH="$HOME/.bashrc"
 fi
 
-SCRIPT_GREP_RESULT=$(grep ".bash_personal_aliases" "$BASHRC_PATH")
-
-if [ -n "$SCRIPT_GREP_RESULT" ]; then
+if [ -f "$BASHRC_PATH" ] && grep -q ".bash_personal_aliases" "$BASHRC_PATH"; then
 	echo "$BASHRC_PATH already seems to be configured. Outputting tail:"
 	echo "======== $BASHRC_PATH ========"
 	tail "$BASHRC_PATH"
@@ -28,7 +26,6 @@ fi
 printf "\n\n" >> "$BASHRC_PATH"
 printf "source $PWD/.bash_personal_aliases\n" >> "$BASHRC_PATH"
 printf "source $PWD/.bash_personal_config\n\n" >> "$BASHRC_PATH"
-export PATH="$PATH:$HOME/code/dotfiles/bash/scripts"
 
 # Set up case-insensitivity (from: https://askubuntu.com/q/87061/1039153):
 # If ~/.inputrc doesn't exist yet: First include the original /etc/inputrc

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # First create and navigate to a new folder
-timelapse_directory="~/Pictures/timelapse"
-# TODO test if path doesn't exist
-cd ~/Pictures/timelapse # TODO refactor with other photo scripts
+timelapse_directory="$HOME/Pictures/timelapse"
+mkdir -p "$timelapse_directory"
+cd "$timelapse_directory"
 var_time=$(date +%Y-%m-%d-%H%M%S)
-mkdir $var_time
+mkdir "$var_time"
 cd "./$var_time"
 
 if ! [ -x "$(command -v gnome-screensaver-command)" ]; then
