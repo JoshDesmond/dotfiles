@@ -25,6 +25,7 @@ export PATH=$PATH:$HOME/.local/bin
 
 # SeaCrit env vault CLI (private repo at ~/code/seacrit)
 [ -d "$HOME/code/seacrit/bin" ] && export PATH="$HOME/code/seacrit/bin:$PATH"
+[ -f "$HOME/code/seacrit/completions/seacrit.bash" ] && source "$HOME/code/seacrit/completions/seacrit.bash"
 
 # SSH agent setup
 if command -v keychain >/dev/null 2>&1; then
