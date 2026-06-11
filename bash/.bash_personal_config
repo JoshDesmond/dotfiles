@@ -28,16 +28,22 @@ export PATH=$PATH:$HOME/.local/bin
 [ -f "$HOME/code/seacrit/completions/seacrit.bash" ] && source "$HOME/code/seacrit/completions/seacrit.bash"
 
 # SSH agent setup
+SSH_IDENTITY_FILE="$HOME/.ssh/id_rsa"
+if [ "$USER" = "aphex" ]; then
+	# 2026-06: legacy exception for `aphex` to use custom key name
+	SSH_IDENTITY_FILE="$HOME/.ssh/id_ed25519"
+fi
+
 if command -v keychain >/dev/null 2>&1; then
-	if [ -f "$HOME/.ssh/id_rsa" ]; then
+	if [ -f "$SSH_IDENTITY_FILE" ]; then
 		if [ "$(uname -s)" = "Darwin" ]; then
 			# Homebrew keychain on macOS: pass only key paths (no "ssh" token).
-			eval "$(keychain --quiet --eval "$HOME/.ssh/id_rsa")"
+			eval "$(keychain --quiet --eval "$SSH_IDENTITY_FILE")"
 		else
-			eval "$(keychain --quiet --eval --agents ssh "$HOME/.ssh/id_rsa")"
+			eval "$(keychain --quiet --eval --agents ssh "$SSH_IDENTITY_FILE")"
 		fi
 	else
-		echo "~/.ssh/id_rsa not found; edit bash/.bash_personal_config to set your preferred SSH key."
+		echo "$SSH_IDENTITY_FILE not found; edit bash/.bash_personal_config to set your preferred SSH key."
 	fi
 else
 	echo "keychain not found; install keychain to enable SSH agent persistence."
@@ -88,6 +94,7 @@ shorten() {
 	PS1="$PROMPT_GREEN\u@\h$PROMPT_RESET:$PROMPT_BLUE\W$PROMPT_RESET${GIT_BRANCH_IN_PROMPT}$PROMPT_RESET\$ "
 }
 
+# TODO this breaks if you never ran shorten() first
 longen() {
 	PS1=$old_ps1
 }
