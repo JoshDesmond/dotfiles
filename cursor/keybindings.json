@@ -5,6 +5,10 @@
     "command": "composerMode.agent"
   },
   {
+    "key": "ctrl+shift+a",
+    "command": "workbench.action.focusFirstEditorGroup"
+  },
+  {
     "key": "shift+g",
     "command": "vscode-neovim.send",
     "args": "<S-g>",
@@ -25,5 +29,9 @@
     "key": "ctrl+o",
     "command": "-workbench.action.files.openFile",
     "when": "true"
+  },
+  {
+    "key": "ctrl+alt+w",
+    "command": "workbench.action.openLayoutSwitcher"
   }
 ]
