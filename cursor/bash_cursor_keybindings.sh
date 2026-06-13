@@ -1,8 +1,8 @@
 # Simple script to manage Cursor keybindings on Unix-like systems
-# Usage: ./cursor_keybindings.sh [check|copy]
+# Usage: ./bash_cursor_keybindings.sh [check|copy]
 
-# Define dotfiles path (adjust if needed)
-DOTFILES_PATH="$HOME/Code/dotfiles/cursor/keybindings.json"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_PATH="$SCRIPT_DIR/keybindings.json"
 
 # Common Cursor config locations to check
 CURSOR_PATHS=(
@@ -48,7 +48,12 @@ echo "📁 Found Cursor config at: $CURSOR_PATH"
 
 # Check if dotfiles keybindings exists
 if [ ! -f "$DOTFILES_PATH" ]; then
-    echo "❌ No dotfiles keybindings found at: $DOTFILES_PATH"
+    echo "❌ Source keybindings missing in this repo:"
+    echo "   $DOTFILES_PATH"
+    echo ""
+    echo "This script copies keybindings FROM your dotfiles repo TO Cursor's config."
+    echo "Add the file (e.g. export from Cursor, or copy from another machine):"
+    echo "   cp ~/.config/Cursor/User/keybindings.json \"$DOTFILES_PATH\""
     exit 1
 fi
 

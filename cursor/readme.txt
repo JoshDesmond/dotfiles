@@ -2,7 +2,8 @@
 cp ~/.config/Cursor/User/keybindings.json ~/dotfiles/cursor/
 
 # Use this copy the files to a new system:
-cp ~/Code/dotfiles/cursor/keybindings.json ~/.config/Cursor/User/keybindings.json
+cp ~/code/dotfiles/cursor/keybindings.json ~/.config/Cursor/User/keybindings.json
+# Or from the cursor/ directory: ./bash_cursor_keybindings.sh copy
 
 # Note, you might have to make the directory first:
 cd ~/.config && mkdir Cursor && cd ./Cursor && mkdir User
