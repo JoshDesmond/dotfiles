@@ -40,5 +40,9 @@
   {
     "key": "ctrl+b",
     "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "ctrl+shift+m",
+    "command": "workbench.panel.markers.view.focus"
   }
 ]
