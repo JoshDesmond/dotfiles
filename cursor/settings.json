@@ -1,0 +1,9 @@
+{
+  "vscode-neovim.neovimExecutablePaths.linux": "/snap/nvim/current/usr/bin/nvim",
+  "vscode-neovim.neovimInitVimPaths.linux": "/home/desmond/.config/nvim/init.vim",
+  "vscode-neovim.compositeKeys": {
+    "jk": {
+      "command": "vscode-neovim.escape"
+    }
+  }
+}

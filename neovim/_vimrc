@@ -4,9 +4,11 @@
 scriptencoding utf-8
 set encoding=utf-8
 
-" Set windows pasting
+" Set windows pasting (mswin.vim removed in Neovim 0.10+; skip when unavailable)
 set nocompatible
-source $VIMRUNTIME/mswin.vim
+if filereadable(expand('$VIMRUNTIME/mswin.vim'))
+  source $VIMRUNTIME/mswin.vim
+endif
 
 " Behavior Settings
 set noerrorbells
