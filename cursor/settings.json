@@ -11,5 +11,25 @@
     "jk": {
       "command": "vscode-neovim.escape"
     }
-  }
+  },
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  // Adds prettier
+ "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // Misc
+  "remote.SSH.remotePlatform": {
+    "archeplex": "linux"
+  },
+  "workbench.editor.enablePreview": false,
+  "window.autoDetectColorScheme": false,
+  "editor.rulers": [
+    100
+  ],
+ 
 }

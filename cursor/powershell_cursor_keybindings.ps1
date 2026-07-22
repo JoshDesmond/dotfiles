@@ -1,5 +1,6 @@
 # Simple script to manage Cursor keybindings on Windows
 # Usage: .\powershell_cursor_keybindings.ps1 [check|copy]
+# // TODO: Legacy copy workflow — migrate to powershell_cursor_symlinks.ps1 and remove this script.
 
 param(
     [Parameter(Position = 0)]

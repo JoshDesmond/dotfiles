@@ -1,5 +1,6 @@
 # Simple script to manage Cursor keybindings on Unix-like systems
 # Usage: ./bash_cursor_keybindings.sh [check|copy]
+# // TODO: Legacy copy workflow — replace with bash_cursor_symlinks.sh (check|link) and remove this script.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_PATH="$SCRIPT_DIR/keybindings.json"
