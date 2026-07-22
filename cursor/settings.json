@@ -1,7 +1,7 @@
 {
   // Avoid loading powershell profile during terminal invocations
   "terminal.integrated.automationProfile.windows": {
-    "source": "PowerShell",
+    "path": "${env:windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
     "args": ["-NoProfile"]
   },
   // Neovim setting tweaks
