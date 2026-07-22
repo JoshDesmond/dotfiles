@@ -1,0 +1,24 @@
+# Dotfiles git configuration.
+
+[user]
+	name = Josh Desmond
+	email = JoshDesmond@users.noreply.github.com
+	signingkey = ~/.ssh/id_rsa.pub
+
+[core]
+	editor = nvim
+
+[init]
+	defaultBranch = main
+
+[commit]
+	gpgsign = true
+
+[gpg]
+	format = ssh
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true

@@ -29,10 +29,6 @@ export PATH=$PATH:$HOME/.local/bin
 
 # SSH agent setup
 SSH_IDENTITY_FILE="$HOME/.ssh/id_rsa"
-if [ "$USER" = "aphex" ]; then
-	# 2026-06: legacy exception for `aphex` to use custom key name
-	SSH_IDENTITY_FILE="$HOME/.ssh/id_ed25519"
-fi
 
 if command -v keychain >/dev/null 2>&1; then
 	if [ -f "$SSH_IDENTITY_FILE" ]; then

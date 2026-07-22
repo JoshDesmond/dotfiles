@@ -45,7 +45,7 @@ echo "==== SSH setup ===="
 # 4. Git config (needs the SSH key from step 3 for signing).
 echo
 echo "==== Git setup ===="
-"$DOTFILES_ROOT/bash/git_setup.sh"
+"$DOTFILES_ROOT/git/git_setup.sh"
 
 # 5. Bashrc / bash_profile sourcing of personal config + aliases.
 echo
