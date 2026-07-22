@@ -1,4 +1,10 @@
 {
+  // Avoid loading powershell profile during terminal invocations
+  "terminal.integrated.automationProfile.windows": {
+    "source": "PowerShell",
+    "args": ["-NoProfile"]
+  },
+  // Neovim setting tweaks
   "vscode-neovim.neovimExecutablePaths.linux": "/snap/nvim/current/usr/bin/nvim",
   "vscode-neovim.neovimInitVimPaths.linux": "/home/desmond/.config/nvim/init.vim",
   "vscode-neovim.compositeKeys": {
