@@ -30,7 +30,7 @@ if [[ ! -f "$DOTFILES_GITCONFIG" ]]; then
 	exit 1
 fi
 
-# Skip setup if the system git config already points at the dotfiles git config
+# Skip rewrite if the system git config already includes the dotfiles git config
 if [[ -f "$SYSTEM_GITCONFIG" ]] && grep -Fq "$DOTFILES_GITCONFIG_PATH" "$SYSTEM_GITCONFIG"; then
 	echo "$SYSTEM_GITCONFIG already points at the dotfiles git config:"
 	echo "======== $SYSTEM_GITCONFIG ========"
@@ -42,9 +42,10 @@ else
 		BACKUP="$SYSTEM_GITCONFIG.bak.$(date +%Y%m%d%H%M%S)"
 		echo "Backing up existing $SYSTEM_GITCONFIG to $BACKUP"
 		cp "$SYSTEM_GITCONFIG" "$BACKUP"
+		echo "Replacing inline git config with dotfiles include stub."
 	fi
 
-	# Point the system git config at the dotfiles git config
+	# Point the system git config at the dotfiles git config (single source of truth)
 	cat > "$SYSTEM_GITCONFIG" <<EOF
 $SYSTEM_GITCONFIG_HEADER
 [include]
@@ -53,10 +54,10 @@ EOF
 	echo "Wrote $SYSTEM_GITCONFIG"
 fi
 
-# Warn when the signing key file is missing (matches ssh/ssh_setup.sh defaults)
+# Signing key path lives in git/.gitconfig; warn if the file is missing
 KEY_PUB="$HOME/.ssh/id_rsa.pub"
 if [[ ! -f "$KEY_PUB" ]]; then
-	echo "Warning: SSH public key not found at $KEY_PUB, skipping signing key setup"
+	echo "Warning: SSH public key not found at $KEY_PUB; commit signing will fail until it exists."
 fi
 
 # Point the dotfiles repo origin at GitHub over SSH when run from the repo
@@ -64,5 +65,15 @@ if git -C "$DOTFILES_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
 	git -C "$DOTFILES_ROOT" remote set-url origin "git@github.com:JoshDesmond/dotfiles.git"
 	echo "Set dotfiles origin remote to git@github.com:JoshDesmond/dotfiles.git"
 fi
+
+# Confirm the include stub loads git/.gitconfig
+if ! git config --global --includes user.name >/dev/null 2>&1; then
+	echo "Error: dotfiles git config did not load; check $SYSTEM_GITCONFIG" >&2
+	exit 1
+fi
+
+echo "Verified dotfiles git config is active:"
+echo "  user.name=$(git config --global --includes user.name)"
+echo "  fetch.prune=$(git config --global --includes --get fetch.prune || echo false)"
 
 echo "Git setup complete."
