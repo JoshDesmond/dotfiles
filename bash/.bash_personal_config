@@ -90,3 +90,6 @@ PS1=$PS1_LONG
 shorten() { PS1=$PS1_SHORT; }
 longen() { PS1=$PS1_LONG; }
 
+# nvm .nvmrc auto-switch (deferred until nvm loads in ~/.bashrc)
+[ -f "$DOTFILES_BASH/.bash_nvm_autoload" ] && . "$DOTFILES_BASH/.bash_nvm_autoload"
+

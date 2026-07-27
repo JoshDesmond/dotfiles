@@ -1,0 +1,26 @@
+# Auto-switch Node versions when entering directories with .nvmrc.
+# Sourced from .bash_personal_config; nvm itself loads later in ~/.bashrc.
+# Runs on each prompt once nvm is available.
+# https://github.com/nvm-sh/nvm#deeper-shell-integration
+
+autoload-nvmrc() {
+    command -v nvm >/dev/null 2>&1 || return 0
+
+    local nvmrc_path
+    nvmrc_path="$(nvm_find_nvmrc 2>/dev/null || true)"
+
+    if [ -n "$nvmrc_path" ]; then
+        local nvmrc_node_version
+        nvmrc_node_version="$(nvm version "$(tr -d '[:space:]' < "${nvmrc_path}")")"
+
+        if [ "$nvmrc_node_version" = "N/A" ]; then
+            nvm install
+        elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+            nvm use --silent
+        fi
+    elif [ -n "${NVM_DIR:-}" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+        nvm use default --silent
+    fi
+}
+
+PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND};}autoload-nvmrc"
